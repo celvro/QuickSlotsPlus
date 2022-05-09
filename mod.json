@@ -1,0 +1,12 @@
+{
+    "Id": "QuickSlotsPlus",
+    "DisplayName": "QuickSlots+",
+    "Author": "celvro",
+    "Version": "1.0.0",
+    "Enable": true,
+    "AssemblyName": "QuickSlotsPlus.dll",
+    "Game": "Subnautica",
+    "Dependencies": [
+        "SMLHelper"
+    ]
+}

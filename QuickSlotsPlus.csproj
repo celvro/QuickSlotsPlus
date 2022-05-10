@@ -47,11 +47,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\Subnautica_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="QModInstaller, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="QModInstaller, Version=4.4.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
     </Reference>
-    <Reference Include="SMLHelper, Version=2.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SMLHelper, Version=2.13.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\QMods\Modding Helper\SMLHelper.dll</HintPath>
     </Reference>

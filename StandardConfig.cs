@@ -13,11 +13,17 @@ namespace QuickSlotsPlus
         [Toggle("Do Not Add New Items to Empty Slots")]
         public bool disableBindToEmpty = true;
 
-        /*[Toggle("Show HotKey labels"), OnChange(nameof(RedrawQuickSlots))]
+        [Toggle("Show HotKey labels"), OnChange(nameof(RedrawQuickSlots))]
         public bool showLabels = true;
 
         [Slider("Label Size", 5, 30, DefaultValue = 18), OnChange(nameof(RedrawQuickSlots))]
-        public int labelSize = 18;*/
+        public int labelSize = 18;
+
+        [Slider("Horizontal Position", -20, 20, DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
+        public float labelXpos = 0;
+
+        [Slider("Vertical Position", -25, 100, DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
+        public float labelYpos = 0;
 
         [Keybind("Slot 6"), OnChange(nameof(RedrawQuickSlots))]
         public KeyCode HotKey6 = KeyCode.Alpha6;

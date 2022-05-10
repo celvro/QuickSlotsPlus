@@ -4,6 +4,10 @@ using QuickSlotsPlus.Utility;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
+
+/*
+ * Fixes a bug from MoreQuickSlots
+ */
 namespace QuickSlotsPlus.Patches
 {
 

@@ -38,17 +38,17 @@ namespace QuickSlotsPlus.Utility
 
         public static void LoadCustomLabels()
         {
-            var assemblyDir = Assembly.GetExecutingAssembly().Location;
-            var path = Path.Combine(assemblyDir, "customLabels.json");
+            string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var path = Path.Combine(assemblyFolder, "customLabels.json");
             if (File.Exists(path))
             {
                 var JsonConfig = File.ReadAllText(path);
-                Logger.Log(Logger.Level.Debug, "Custom hotkey label json: \n" + JsonConfig);
+                Logger.Log(Logger.Level.Debug, "Loaded hotkey label json: \n" + JsonConfig);
                 CustomLabels = CreateFromJSON(JsonConfig);
             }
             else
             {
-                Logger.Log(Logger.Level.Debug, "Did not find label file: " + path);
+                Logger.Log(Logger.Level.Debug, "Did not find custom label file: " + path);
             }
         }
 
@@ -65,15 +65,15 @@ namespace QuickSlotsPlus.Utility
 
                 return label_1;
             }
-            else if (CharToKeyCode.TryGetValue(keyCode, out char label_2))
+            else if (DefaultLabels.TryGetValue(keyCode, out char label_2))
             {
-                Logger.Log(Logger.Level.Debug, "Found label for keycode: " + keyCode.ToString());
+                Logger.Log(Logger.Level.Debug, "Found default custom label for keycode: " + keyCode.ToString());
 
                 return label_2.ToString();
             }
             else if (keyCode == KeyCode.None)
             {
-                Logger.Log(Logger.Level.Debug, "Found empty label.");
+                Logger.Log(Logger.Level.Debug, "Found KeyCode.None, returning blank string.");
 
                 // Can't enter empty char into dictionary
                 return "";
@@ -109,7 +109,7 @@ namespace QuickSlotsPlus.Utility
          * 
          * You'd think a method exists for this...
          */
-        public static readonly Dictionary<KeyCode, char> CharToKeyCode = new Dictionary<KeyCode, char>()
+        public static readonly Dictionary<KeyCode, char> DefaultLabels = new Dictionary<KeyCode, char>()
         {
           //-------------------------LOGICAL mappings-------------------------
 

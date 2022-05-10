@@ -22,9 +22,6 @@ namespace QuickSlotsPlus.Utility
             Mod.RedrawQuickSlots();
         }
 
-        /**
-         * This is run once per frame, maybe inputs emit events that we can subscribe to instead
-         */
         public void Update()
         {
             for(var i = 6; i <= Mod.Config.slotCount; i++)

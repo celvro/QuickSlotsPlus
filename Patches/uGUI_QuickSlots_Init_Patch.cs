@@ -1,79 +1,120 @@
 ﻿using HarmonyLib;
 using QuickSlotsPlus.Utility;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Patches
 {
+    /*
+     * Draws hotkey labels. 
+     */
     [HarmonyPatch(typeof(uGUI_QuickSlots), "Init")]
     public static class uGUI_QuickSlots_Init_Patch
     {
+        private static FieldInfo uGUI_QuickSlots_icons = typeof(uGUI_QuickSlots).GetField("icons", BindingFlags.Instance | BindingFlags.NonPublic);
         public static void Postfix(uGUI_QuickSlots __instance)
         {
             DrawLabels(__instance);
 
-            Logger.Log(Logger.Level.Info, "Patched labels.");
+            Logger.Log(Logger.Level.Info, "Patched hotkey labels.");
         }
-
-        /**
-         * TODO: none of this works without TextMeshPro, maybe it can be replaced with UnityEngine.TextRenderingModule?
-         */
+ 
         public static void DrawLabels(uGUI_QuickSlots quickSlots)
         {
-            // Do nothing until this actually works, need to comment out failing code
-            return;
-            /*if (!ShouldShowLabels(quickSlots)) {
+            uGUI_ItemIcon[] icons = (uGUI_ItemIcon[])uGUI_QuickSlots_icons.GetValue(quickSlots);
+            if (!ShouldShowLabels(quickSlots) || icons == null)
+            {
                 return;
             }
 
             // Reading in "customLabels.json", keep it outside the loop
             LabelUtil.LoadCustomLabels();
 
+            Text textPrefab = GetTextPrefab();
+            if (textPrefab == null)
+            {
+                Logger.Log(Logger.Level.Warn, "Could not find text prefab.");
+                return;
+            }
+
             for (var i = 0; i < Mod.Config.slotCount; i++)
             {
-                var icon = quickSlots.GetIcon(i);
-
-                CreateNewText(GetTextPrefab(), icon.transform, LabelUtil.getSlotKeyText(i), i);
-            }*/
+                uGUI_ItemIcon itemIcon = icons[i];
+                CreateRaycastTarget(icons[i]);
+                CreateNewText(textPrefab, itemIcon.transform, LabelUtil.getSlotKeyText(i), i);
+            }
         }
 
-        /*private static bool ShouldShowLabels(uGUI_QuickSlots quickSlots)
+        /**
+         * Create a bigger raycast target for QuickSnap to work more consistently. Maybe
+         * the quick slot icon raycast centers are off or something idk.
+         */
+        private static void CreateRaycastTarget(uGUI_ItemIcon icon)
+        {
+            return; // TODO
+        }
+
+        private static Text GetTextPrefab()
+        {
+            HandReticle handReticle = GameObject.FindObjectOfType<HandReticle>();
+            if (handReticle != null)
+            {
+                Text interactPrimaryText = handReticle.interactPrimaryText;
+                if (interactPrimaryText != null)
+                {
+                    return interactPrimaryText;
+                }
+            }
+
+            return null;
+        }
+        private static bool ShouldShowLabels(uGUI_QuickSlots quickSlots)
         {
             if (quickSlots == null || !Mod.Config.showLabels)
             {
                 return false;
             }
             Player player = Player.main;
+
+            // I don't think the piloting check works...
             return player != null && player.GetMode() != Player.Mode.Piloting;
-        }*/
-
-        /*private static TextMeshProUGUI GetTextPrefab()
-        {
-            var prefabObject = Object.FindObjectOfType<HandReticle>();
-
-            return prefabObject?.compTextHandSubscript;
         }
 
-        // https://github.com/DanielLavrushin/SaubNauticaBZ_QuickSlotsMod/blob/fc02a3c73d76aad3aa03aa08eb1a18bb467d00ac/QuickSlots/GameController.cs#L122
-        private static TextMeshProUGUI CreateNewText(TextMeshProUGUI prefab, Transform parent, string newText, int index = -1)
+        // Used dnspy to steal this from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14 "open source"
+        private static Text CreateNewText(Text prefab, Transform parent, string newText, int index = -1)
         {
-            TextMeshProUGUI text = Object.Instantiate(prefab);
+            Text text = Object.Instantiate<Text>(prefab);
             text.gameObject.layer = parent.gameObject.layer;
-            text.gameObject.name = "QuickSlotText" + index.ToString();
+            text.gameObject.name = "QuickSlotText" + ((index >= 0) ? index.ToString() : "");
             text.transform.SetParent(parent, false);
-            text.transform.localScale = new Vector3(1, 1, 1);
+            text.transform.localScale = new Vector3(1f, 1f, 1f);
             text.gameObject.SetActive(true);
             text.enabled = true;
             text.text = newText;
-            text.fontSize = Mod.Config.labelSize;
             RectTransformExtensions.SetParams(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), parent);
-            text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 100);
-            text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100);
-            text.rectTransform.anchoredPosition = new Vector3(0, -36);
-            text.alignment = TextAlignmentOptions.Midline;
-            text.raycastTarget = false;
+            text.rectTransform.SetSizeWithCurrentAnchors(0, 100f);
+            text.rectTransform.SetSizeWithCurrentAnchors((RectTransform.Axis)1, 100f);
+
+            // **** Set config options ****
+            text.fontSize = Mod.Config.labelSize;
+
+            float xPos = Mod.Config.labelXpos;
+            float yPos = Mod.Config.labelYpos - 36f; // Subtract 36 to make default position be below the icons
+            text.rectTransform.anchoredPosition = new Vector3(xPos, yPos);
+
+
+            // does this do anything?
+            text.alignment = TextAnchor.MiddleCenter;
+
+
+            // try to make snapping "sticky", it depends on the anchored position i think?
+            // ultimately should try to raycast over the whole icon with a slightly bigger radius to fix it
+            text.raycastTarget = true;
+
 
             return text;
-        }*/
+        }
     }
 }

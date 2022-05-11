@@ -1,6 +1,7 @@
 ﻿using SMLHelper.V2.Json;
 using SMLHelper.V2.Options.Attributes;
 using UnityEngine;
+using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus
 {
@@ -75,6 +76,7 @@ namespace QuickSlotsPlus
          */
         public static void RedrawQuickSlots()
         {
+            Logger.Log(Logger.Level.Debug, "Redraw quick slots due to options change");
             Mod.RedrawQuickSlots();
         }
     }

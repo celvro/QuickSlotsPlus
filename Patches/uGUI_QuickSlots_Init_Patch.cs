@@ -58,7 +58,7 @@ namespace QuickSlotsPlus.Patches
 
         private static Text GetTextPrefab()
         {
-            HandReticle handReticle = GameObject.FindObjectOfType<HandReticle>();
+            HandReticle handReticle = Object.FindObjectOfType<HandReticle>();
             if (handReticle != null)
             {
                 Text interactPrimaryText = handReticle.interactPrimaryText;
@@ -82,10 +82,10 @@ namespace QuickSlotsPlus.Patches
             return player != null && player.GetMode() != Player.Mode.Piloting;
         }
 
-        // Used dnspy to steal this from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14 "open source"
+        // Used dnspy to rip the bones from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14
         private static Text CreateNewText(Text prefab, Transform parent, string newText, int index = -1)
         {
-            Text text = Object.Instantiate<Text>(prefab);
+            Text text = Object.Instantiate(prefab);
             text.gameObject.layer = parent.gameObject.layer;
             text.gameObject.name = "QuickSlotText" + ((index >= 0) ? index.ToString() : "");
             text.transform.SetParent(parent, false);
@@ -93,9 +93,11 @@ namespace QuickSlotsPlus.Patches
             text.gameObject.SetActive(true);
             text.enabled = true;
             text.text = newText;
+            text.alignment = TextAnchor.MiddleCenter;
             RectTransformExtensions.SetParams(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), parent);
             text.rectTransform.SetSizeWithCurrentAnchors(0, 100f);
             text.rectTransform.SetSizeWithCurrentAnchors((RectTransform.Axis)1, 100f);
+            text.raycastTarget = false;
 
             // **** Set config options ****
             text.fontSize = Mod.Config.labelSize;
@@ -103,16 +105,6 @@ namespace QuickSlotsPlus.Patches
             float xPos = Mod.Config.labelXpos;
             float yPos = Mod.Config.labelYpos - 36f; // Subtract 36 to make default position be below the icons
             text.rectTransform.anchoredPosition = new Vector3(xPos, yPos);
-
-
-            // does this do anything?
-            text.alignment = TextAnchor.MiddleCenter;
-
-
-            // try to make snapping "sticky", it depends on the anchored position i think?
-            // ultimately should try to raycast over the whole icon with a slightly bigger radius to fix it
-            text.raycastTarget = true;
-
 
             return text;
         }

@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Subnautica\QMods\QuickSlotsPlus\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -90,6 +90,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Patches\uGUI_PDA_Patch.cs" />
+    <Compile Include="Patches\QuickSlots_Bindings_Patch.cs" />
     <Compile Include="Patches\GameInput_SetBindingInternal_Patch.cs" />
     <Compile Include="Patches\QuickSlots_BindToEmpty_Patch.cs" />
     <Compile Include="Utility\InputHandler.cs" />

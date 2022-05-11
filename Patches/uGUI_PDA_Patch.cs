@@ -37,7 +37,7 @@ namespace QuickSlotsPlus.Patches
         private static void MoveTransformUp(Transform transform)
         {
             var temp = transform.localPosition;
-            temp.y += 125f;
+            temp.y = 125f;
             transform.localPosition = temp;
         }
     }

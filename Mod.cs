@@ -1,9 +1,7 @@
 ﻿using HarmonyLib;
 using SMLHelper.V2.Handlers;
 using QModManager.API.ModLoading;
-using UnityEngine;
 using Logger = QModManager.Utility.Logger;
-using System.Reflection;
 using QuickSlotsPlus.Patches;
 
 namespace QuickSlotsPlus
@@ -13,9 +11,6 @@ namespace QuickSlotsPlus
     public static class Mod
     {
         internal static StandardConfig Config { get; } = OptionsPanelHandler.Main.RegisterModOptions<StandardConfig>();
-
-        // Stores the user's selected item order
-        private static FieldInfo InventoryItemsBinding = typeof(QuickSlots).GetField("binding", BindingFlags.NonPublic | BindingFlags.Instance);
 
         [QModPatch]
         public static void Load()
@@ -36,7 +31,7 @@ namespace QuickSlotsPlus
 
             // Saving the binding allows us to restore QuickSlot items
             var oldSlots = Inventory.main.quickSlots;
-            var oldBinding = (InventoryItem[])InventoryItemsBinding.GetValue(oldSlots);
+            var oldBinding = oldSlots.binding;
 
             // In case QuickSlot size is reduced and held item no longer fits on bar
             oldSlots.DeselectImmediate();
@@ -51,7 +46,7 @@ namespace QuickSlotsPlus
                 newBinding[i] = oldBinding[i];
             }
             // Restore QuickSlot selections
-            InventoryItemsBinding.SetValue(Inventory.main.quickSlots, newBinding);
+            Inventory.main.quickSlots.binding = newBinding;
         }
     }
 }

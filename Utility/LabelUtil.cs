@@ -17,23 +17,26 @@ namespace QuickSlotsPlus.Utility
 
         public static string getSlotKeyText(int slotId)
         {
+            string bindingName;
             // Hotkeys 1-5
             if (slotId < Player.quickSlotButtonsCount)
             {
-                string inputName = GameInput.GetBindingName(GameInput.Button.Slot1 + slotId, GameInput.BindingSet.Primary);
-                if (inputName == null)
+                bindingName = GameInput.GetBindingName(GameInput.Button.Slot1 + slotId, GameInput.BindingSet.Primary);
+                if (bindingName == null)
                 {
                     // A HotKey 1-5 is not set
                     return "";
                 }
-
-                string input = uGUI.GetDisplayTextForBinding(inputName);
-                return KeyCodeToString(input);
             }
+            else
+            {
+                KeyCode keyCode = (KeyCode)Mod.Config.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Config);
+                bindingName = keyCode.ToString();
+            }
+            Logger.Log(Logger.Level.Debug, $"Binding name for slot {slotId}: {bindingName}");
 
-            var v = (KeyCode)Mod.Config.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Config);
-
-            return KeyCodeToString(v);
+            string input = uGUI.GetDisplayTextForBinding(bindingName);
+            return KeyCodeToString(input);
         }
 
         public static void LoadCustomLabels()
@@ -57,151 +60,93 @@ namespace QuickSlotsPlus.Utility
             return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
         }
 
-        public static string KeyCodeToString(KeyCode keyCode)
+        public static string KeyCodeToString(string keyCode)
         {
-            if (CustomLabels.TryGetValue(keyCode.ToString(), out string label_1))
+            // KeyCode was not found in Enum, try custom labels
+            if (CustomLabels.TryGetValue(keyCode, out string label_1))
             {
-                Logger.Log(Logger.Level.Debug, "Found custom label for keycode: " + keyCode.ToString());
-
+                Logger.Log(Logger.Level.Debug, $"Found custom label {label_1} for keycode {keyCode}");
                 return label_1;
             }
             else if (DefaultLabels.TryGetValue(keyCode, out char label_2))
             {
-                Logger.Log(Logger.Level.Debug, "Found default custom label for keycode: " + keyCode.ToString());
-
+                Logger.Log(Logger.Level.Debug, $"Found default custom label {label_2} for keycode {keyCode}");
                 return label_2.ToString();
             }
-            else if (keyCode == KeyCode.None)
-            {
-                Logger.Log(Logger.Level.Debug, "Found KeyCode.None, returning blank string.");
-
-                // Can't enter empty char into dictionary
-                return "";
-            }
-
-            Logger.Log(Logger.Level.Debug, "Returning unmodified keycode text.");
-
-            return keyCode.ToString();
-        }
-
-        public static string KeyCodeToString(string keyCode)
-        {
-            
-            try
-            {
-                KeyCode kc = (KeyCode)Enum.Parse(typeof(KeyCode), keyCode);
-                return KeyCodeToString(kc);
-
-            }
-            catch (ArgumentException)
-            {
-                // KeyCode was not found in Enum, try custom labels
-                if (CustomLabels.TryGetValue(keyCode, out string label_1))
-                {
-                    Logger.Log(Logger.Level.Debug, "Found custom label for keycode: " + keyCode);
-                    return label_1;
-                }
-                return keyCode;
-            }
+            return keyCode;
         }
 
         /* https://gist.github.com/b-cancel/c516990b8b304d47188a7fa8be9a1ad9
          * 
          * You'd think a method exists for this...
          */
-        public static readonly Dictionary<KeyCode, char> DefaultLabels = new Dictionary<KeyCode, char>()
+        public static readonly Dictionary<string, char> DefaultLabels = new Dictionary<string, char>()
         {
           //-------------------------LOGICAL mappings-------------------------
-
-          {KeyCode.A, 'A'},
-          {KeyCode.B, 'B'},
-          {KeyCode.C, 'C'},
-          {KeyCode.D, 'D'},
-          {KeyCode.E, 'E'},
-          {KeyCode.F, 'F'},
-          {KeyCode.G, 'G'},
-          {KeyCode.H, 'H'},
-          {KeyCode.I, 'I'},
-          {KeyCode.J, 'J'},
-          {KeyCode.K, 'K'},
-          {KeyCode.L, 'L'},
-          {KeyCode.M, 'M'},
-          {KeyCode.N, 'N'},
-          {KeyCode.O, 'O'},
-          {KeyCode.P, 'P'},
-          {KeyCode.Q, 'Q'},
-          {KeyCode.R, 'R'},
-          {KeyCode.S, 'S'},
-          {KeyCode.T, 'T'},
-          {KeyCode.U, 'U'},
-          {KeyCode.V, 'V'},
-          {KeyCode.W, 'W'},
-          {KeyCode.X, 'X'},
-          {KeyCode.Y, 'Y'},
-          {KeyCode.Z, 'Z'},
+          {"None", ' ' },
   
           //KeyPad Numbers
-          {KeyCode.Keypad1, '1'},
-          {KeyCode.Keypad2, '2'},
-          {KeyCode.Keypad3, '3'},
-          {KeyCode.Keypad4, '4'},
-          {KeyCode.Keypad5, '5'},
-          {KeyCode.Keypad6, '6'},
-          {KeyCode.Keypad7, '7'},
-          {KeyCode.Keypad8, '8'},
-          {KeyCode.Keypad9, '9'},
-          {KeyCode.Keypad0, '0'},
+          {"Keypad1", '1'},
+          {"Keypad2", '2'},
+          {"Keypad3", '3'},
+          {"Keypad4", '4'},
+          {"Keypad5", '5'},
+          {"Keypad6", '6'},
+          {"Keypad7", '7'},
+          {"Keypad8", '8'},
+          {"Keypad9", '9'},
+          {"Keypad0", '0'},
   
           //Other Symbols
-          {KeyCode.Exclaim, '!'},
-          {KeyCode.At, '@'},
-          {KeyCode.Hash, '#'},
-          {KeyCode.Dollar, '$'},
-          {KeyCode.Caret, '^'},
-          {KeyCode.Ampersand, '&'},
-          {KeyCode.Asterisk, '*'},
-          {KeyCode.LeftParen, '('},
-          {KeyCode.RightParen, ')'},
-          {KeyCode.Plus, '+'},
-          {KeyCode.Comma, ','},
-          {KeyCode.Minus, '-'},
-          {KeyCode.Period, '.'},
-          {KeyCode.Slash, '/'},
-          {KeyCode.Colon, ':'},
-          {KeyCode.Semicolon, ';'},
-          {KeyCode.Less, '<'},
-          {KeyCode.Equals, '='},
-          {KeyCode.Greater, '>'},
-          {KeyCode.Question, '?'},
-          {KeyCode.LeftBracket, '['},
-          {KeyCode.Backslash, '\\' },
-          {KeyCode.RightBracket, ']'},
-          {KeyCode.Underscore, '_'},
-          {KeyCode.BackQuote, '`'},
-          {KeyCode.Quote, '\'' },
-          {KeyCode.DoubleQuote, '"'},
+          {"Exclaim", '!'},
+          {"At", '@'},
+          {"Hash", '#'},
+          {"Dollar", '$'},
+          {"Caret", '^'},
+          {"Ampersand", '&'},
+          {"Asterisk", '*'},
+          {"LeftParen", '('},
+          {"RightParen", ')'},
+          {"Plus", '+'},
+          {"Comma", ','},
+          {"Minus", '-'},
+          {"Period", '.'},
+          {"Slash", '/'},
+          {"Colon", ':'},
+          {"Semicolon", ';'},
+          {"Less", '<'},
+          {"Equals", '='},
+          {"Greater", '>'},
+          {"Question", '?'},
+          {"LeftBracket", '['},
+          {"Backslash", '\\' },
+          {"RightBracket", ']'},
+          {"Underscore", '_'},
+          {"BackQuote", '`'},
+          {"Quote", '\'' },
+          {"DoubleQuote", '"'},
           
           //-------------------------NON-LOGICAL mappings-------------------------
           
           
           //Alpha Numbers
-          {KeyCode.Alpha1, '1'},
-          {KeyCode.Alpha2, '2'},
-          {KeyCode.Alpha3, '3'},
-          {KeyCode.Alpha4, '4'},
-          {KeyCode.Alpha5, '5'},
-          {KeyCode.Alpha6, '6'},
-          {KeyCode.Alpha7, '7'},
-          {KeyCode.Alpha8, '8'},
-          {KeyCode.Alpha9, '9'},
-          {KeyCode.Alpha0, '0'},
+          {"Alpha1", '1'},
+          {"Alpha2", '2'},
+          {"Alpha3", '3'},
+          {"Alpha4", '4'},
+          {"Alpha5", '5'},
+          {"Alpha6", '6'},
+          {"Alpha7", '7'},
+          {"Alpha8", '8'},
+          {"Alpha9", '9'},
+          {"Alpha0", '0'},
           
-          {KeyCode.KeypadPeriod, '.'},
-          {KeyCode.KeypadDivide, '/'},
-          {KeyCode.KeypadMultiply, '*'},
-          {KeyCode.KeypadMinus, '-'},
-          {KeyCode.KeypadPlus, '+'},
-          {KeyCode.KeypadEquals, '='},
+          {"KeypadPeriod", '.'},
+          {"KeypadDivide", '/'},
+          {"KeypadMultiply", '*'},
+          {"KeypadMinus", '-'},
+          {"KeypadPlus", '+'},
+          {"KeypadEquals", '='},
 
   
           //-------------------------KEYCODES with NO CHARACER KEY-------------------------

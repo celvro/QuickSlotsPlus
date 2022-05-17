@@ -1,2 +1,5 @@
 bin/
 obj/
+release/README.md
+*.zip
+*.dll

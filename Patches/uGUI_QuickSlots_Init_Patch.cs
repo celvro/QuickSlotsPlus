@@ -13,7 +13,6 @@ namespace QuickSlotsPlus.Patches
     [HarmonyPatch(typeof(uGUI_QuickSlots), "Init")]
     public static class uGUI_QuickSlots_Init_Patch
     {
-        private static FieldInfo uGUI_QuickSlots_icons = typeof(uGUI_QuickSlots).GetField("icons", BindingFlags.Instance | BindingFlags.NonPublic);
         public static void Postfix(uGUI_QuickSlots __instance)
         {
             DrawLabels(__instance);
@@ -23,7 +22,7 @@ namespace QuickSlotsPlus.Patches
  
         public static void DrawLabels(uGUI_QuickSlots quickSlots)
         {
-            uGUI_ItemIcon[] icons = (uGUI_ItemIcon[])uGUI_QuickSlots_icons.GetValue(quickSlots);
+            uGUI_ItemIcon[] icons = quickSlots.icons;
             if (!ShouldShowLabels(quickSlots) || icons == null)
             {
                 return;
@@ -42,34 +41,15 @@ namespace QuickSlotsPlus.Patches
             for (var i = 0; i < Mod.Config.slotCount; i++)
             {
                 uGUI_ItemIcon itemIcon = icons[i];
-                CreateRaycastTarget(icons[i]);
                 CreateNewText(textPrefab, itemIcon.transform, LabelUtil.getSlotKeyText(i), i);
             }
         }
 
-        /**
-         * Create a bigger raycast target for QuickSnap to work more consistently. Maybe
-         * the quick slot icon raycast centers are off or something idk.
-         */
-        private static void CreateRaycastTarget(uGUI_ItemIcon icon)
-        {
-            return; // TODO
-        }
-
         private static Text GetTextPrefab()
         {
-            HandReticle handReticle = Object.FindObjectOfType<HandReticle>();
-            if (handReticle != null)
-            {
-                Text interactPrimaryText = handReticle.interactPrimaryText;
-                if (interactPrimaryText != null)
-                {
-                    return interactPrimaryText;
-                }
-            }
-
-            return null;
+            return Object.FindObjectOfType<HandReticle>()?.interactPrimaryText;
         }
+
         private static bool ShouldShowLabels(uGUI_QuickSlots quickSlots)
         {
             if (quickSlots == null || !Mod.Config.showLabels)
@@ -100,7 +80,7 @@ namespace QuickSlotsPlus.Patches
             text.raycastTarget = false;
 
             // **** Set config options ****
-            text.fontSize = Mod.Config.labelSize;
+            text.fontSize = (int)Mod.Config.labelSize;
 
             float xPos = Mod.Config.labelXpos;
             float yPos = Mod.Config.labelYpos - 36f; // Subtract 36 to make default position be below the icons

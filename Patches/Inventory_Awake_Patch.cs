@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using QuickSlotsPlus.Utility;
-using System.Reflection;
 using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Patches
@@ -11,13 +10,10 @@ namespace QuickSlotsPlus.Patches
         // https://github.com/DanielLavrushin/SaubNauticaBZ_QuickSlotsMod/blob/fc02a3c73d76aad3aa03aa08eb1a18bb467d00ac/QuickSlots/Patches/Inventory_Awake_Patch.cs#L16
         public static void Postfix(Inventory __instance)
         {
-            int slotCount = Mod.Config.slotCount;
-
+            int slotCount = (int)Mod.Config.slotCount;
             Player player = __instance.GetComponent<Player>();
-            var newSlots = new QuickSlots(__instance.gameObject, __instance.toolSocket, __instance.cameraSocket, __instance, player.rightHandSlot, slotCount);
 
-            var setQuickSlots = __instance.GetType().GetMethod("set_quickSlots", BindingFlags.NonPublic | BindingFlags.Instance);
-            setQuickSlots.Invoke(__instance, new object[] { newSlots });
+            __instance.quickSlots = new QuickSlots(__instance.gameObject, __instance.toolSocket, __instance.cameraSocket, __instance, player.rightHandSlot, slotCount);
 
             var inputHandler = __instance.gameObject.GetComponent<InputHandler>();
             if (inputHandler == null)

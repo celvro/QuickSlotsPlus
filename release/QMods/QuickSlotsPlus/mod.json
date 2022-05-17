@@ -2,8 +2,9 @@
     "Id": "QuickSlotsPlus",
     "DisplayName": "QuickSlots+",
     "Author": "celvro",
-    "Version": "1.2.2",
+    "Version": "1.2.4",
     "Enable": true,
+    "nitroxcompat": true,
     "AssemblyName": "QuickSlotsPlus.dll",
     "Game": "Subnautica",
     "Dependencies": [

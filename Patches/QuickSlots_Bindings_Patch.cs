@@ -14,9 +14,7 @@ namespace QuickSlotsPlus.Patches
      */
     class QuickSlots_Bindings_Patch
     {
-        private static FieldInfo QuickSlots_binding = typeof(QuickSlots).GetField("binding", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static FieldInfo QuickSlots_container = typeof(QuickSlots).GetField("container", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static readonly string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         /*
          * Create a wrapper class to serialize/deserialize the json.
@@ -39,16 +37,13 @@ namespace QuickSlotsPlus.Patches
                 __result = new string[20];
 
                 var quickSlots = Inventory.main.quickSlots;
-                Logger.Log(Logger.Level.Debug, "Got Inventory.main.quickslots");
-
                 if (quickSlots != null)
                 {
-                    var binding = (InventoryItem[])QuickSlots_binding.GetValue(quickSlots);
-                    Logger.Log(Logger.Level.Debug, "Got binding values");
+                    InventoryItem[] binding = quickSlots.binding;
 
                     for (int i = 0; i < binding.Length; i++)
                     {
-                        __result[i] = "empty";
+                        __result[i] = null; // include empty bindings
 
                         InventoryItem inventoryItem = binding[i];
                         if (inventoryItem != null && !(inventoryItem.item == null))
@@ -69,7 +64,7 @@ namespace QuickSlotsPlus.Patches
                     var path = Path.Combine(assemblyFolder, "quickslotBindings.json");
                     JsonUtils.Save(new BindingWrapper(__result), path);
                 }
-                return true; // this skips the original call
+                return false; // this skips the original call
             }
 
         }
@@ -92,17 +87,17 @@ namespace QuickSlotsPlus.Patches
                     Logger.Log(Logger.Level.Debug, "uid: " + uids[i]);
                 }
                 var quickSlots = Inventory.main.quickSlots;
-                var binding = (InventoryItem[])QuickSlots_binding.GetValue(quickSlots);
+                InventoryItem[] binding = quickSlots.binding;
 
                 for (int i = 0; i < binding.Length; i++)
                 {
                     __instance.Unbind(i);
                 }
-                var qsContainer = (IEnumerable<InventoryItem>)QuickSlots_container.GetValue(__instance);
-                foreach (InventoryItem inventoryItem in qsContainer)
+
+                foreach (InventoryItem inventoryItem in __instance.container)
                 {
                     UniqueIdentifier component = inventoryItem.item.GetComponent<UniqueIdentifier>();
-                    if (!(component == null))
+                    if (component != null)
                     {
                         int num = Mathf.Min(uids.Length, binding.Length);
                         for (int j = 0; j < num; j++)
@@ -115,7 +110,7 @@ namespace QuickSlotsPlus.Patches
                         }
                     }
                 }
-                return true;
+                return false;
             }
 
         }

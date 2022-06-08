@@ -2,7 +2,7 @@
     "Id": "QuickSlotsPlus",
     "DisplayName": "QuickSlots+",
     "Author": "celvro",
-    "Version": "1.2.4",
+    "Version": "1.2.5",
     "Enable": true,
     "nitroxcompat": true,
     "AssemblyName": "QuickSlotsPlus.dll",

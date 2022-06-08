@@ -11,7 +11,7 @@ namespace QuickSlotsPlus
     public class StandardConfig : ConfigFile
     {
         [Slider("QuickSlot Count", 5, 20, DefaultValue = 10), OnChange(nameof(RedrawQuickSlots))]
-        public float slotCount = 10;
+        public int slotCount = 10;
 
         [Toggle("Do Not Add New Items to Empty Slots")]
         public bool disableBindToEmpty = true;

@@ -89,9 +89,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Patches\GameInput_SetBindingInternal_Patch.cs" />
     <Compile Include="Patches\uGUI_PDA_Patch.cs" />
     <Compile Include="Patches\QuickSlots_Bindings_Patch.cs" />
-    <Compile Include="Patches\GameInput_SetBindingInternal_Patch.cs" />
     <Compile Include="Patches\QuickSlots_OnAddItem_Patch.cs" />
     <Compile Include="Utility\InputHandler.cs" />
     <Compile Include="Patches\uGUI_QuickSlots_Init_Patch.cs" />

@@ -15,4 +15,13 @@ namespace QuickSlotsPlus.Patches
             Mod.RedrawQuickSlots();
         }
     }
+
+    [HarmonyPatch(typeof(GameInput), "Awake")]
+    class GameInput_Awake_Patch
+    {
+        static void Postfix()
+        {
+            GameInput.OnPrimaryDeviceChanged += Mod.RedrawQuickSlots;
+        }
+    }
 }

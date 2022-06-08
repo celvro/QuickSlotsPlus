@@ -19,7 +19,7 @@ namespace QuickSlotsPlus.Patches
             {
                 MoveTransformUp(target.transform);
             }
-            Logger.Log(Logger.Level.Info, "Moved uGUI_Block and uGUI_ItemDropTarget(s) up so they don't cover quick slots.");
+            Logger.Log(Logger.Level.Debug, "Moved uGUI_Block and uGUI_ItemDropTarget(s) up so they don't cover quick slots.");
         }
 
         /*

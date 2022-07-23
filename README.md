@@ -9,8 +9,22 @@ A C# mod for Subnautica to add more slots.
 * Disable adding new items to the quick slots
 * Custom hotkey labels
 * Icons snap to quick slots during drag/drop
-* Fix a bug with saving empty slot positions
-* Works with Nitrox (need to edit `mod.json` in SMLHelper)
+* Save quick slot positions when you exit the game
+* Works with Nitrox
+
+## Requirements
+
+* [QModManager 4](https://www.nexusmods.com/subnautica/mods/201)
+* [SMLHelper](https://www.nexusmods.com/subnautica/mods/113)
+
+## Installation
+
+1. Install QModManager and SMLHelper.
+1. Extract `QMods\QuickSlotsPlus\` to `Subnautica\QMods\QuickSlotsPlus`.
+
+## Nitrox
+
+Manually edit SMLHelper's `QMods\Modding Helper\mod.json` file and add `"NitroxCompat": true`.
 
 ### Add custom labels
 
@@ -25,24 +39,10 @@ A C# mod for Subnautica to add more slots.
 3. I've already added some [default custom labels](https://github.com/celvro/QuickSlotsPlus/blob/fe41a7685674630b3e1b4fba457562b3d6f3bd66/Utility/LabelUtil.cs#L112). 
 You can override them with the KeyCode name.
 
-
-## Requirements
-
-* [QModManager 4](https://github.com/SubnauticaModding/QModManager/releases) - extract to root Subnautica directory
-* [SMLHelper](https://github.com/SubnauticaModding/SMLHelper/releases) - extract to QMods folder
-
-*Note:* The github releases of QModManager and SMLHelper are behind Thunderstore.
-
-## Manual Installation
-
-1. Install QModManager and SMLHelper.
-2. Extract `QMods\QuickSlotsPlus\` to `Subnautica\QMods\QuickSlotsPlus`.
-3. (Nitrox only) Edit SMLHelper's `mod.json` file and add `"nitroxcompat": true`.
-   * The file path is `QMods\Modding Helper\mod.json`
-
 ## Known issues
 
 * Controller hotkeys don't work for slots 6-20
+* Can't use CTRL or ALT modifiers for hotkeys
 * Sometimes while testing Nitrox my equipped tool icon disappeared
 
 [Noticed a bug?](https://github.com/celvro/QuickSlotsPlus/issues)

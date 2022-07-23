@@ -1,5 +1,4 @@
 ﻿using Oculus.Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -205,7 +204,7 @@ namespace QuickSlotsPlus.Utility
             }
 
             Player player = Player.main;
-            return player != null && player.GetMode() == Player.Mode.Normal;
+            return player != null && (player.GetMode() == Player.Mode.Normal || Mod.Config.showLabelsWhilePiloting);
         }
 
         // Used dnspy to rip the bones from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14

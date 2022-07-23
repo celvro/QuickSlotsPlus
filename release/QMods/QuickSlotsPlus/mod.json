@@ -2,12 +2,15 @@
     "Id": "QuickSlotsPlus",
     "DisplayName": "QuickSlots+",
     "Author": "celvro",
-    "Version": "1.2.5",
+    "Version": "1.3.0",
     "Enable": true,
     "nitroxcompat": true,
     "AssemblyName": "QuickSlotsPlus.dll",
     "Game": "Subnautica",
     "Dependencies": [
         "SMLHelper"
-    ]
+    ],
+    "VersionChecker": {
+        "NexusId": "984"
+    }
 }

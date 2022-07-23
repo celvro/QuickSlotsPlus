@@ -1,6 +1,5 @@
 ﻿using SMLHelper.V2.Json;
 using SMLHelper.V2.Options.Attributes;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Logger = QModManager.Utility.Logger;
@@ -18,6 +17,9 @@ namespace QuickSlotsPlus
 
         [Toggle("Show HotKey labels"), OnChange(nameof(RedrawQuickSlots))]
         public bool showLabels = true;
+
+        [Toggle("Show labels while piloting Vehicles", Tooltip = "Exit vehicle to take effect")]
+        public bool showLabelsWhilePiloting = false;
 
         [Slider("Label Size", 8, 50, DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
         public float labelSize = 20;

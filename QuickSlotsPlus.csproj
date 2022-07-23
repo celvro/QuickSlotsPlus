@@ -104,7 +104,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetPath)" "C:\Users\lustick\code\QuickSlotsPlus\QuickSlotsPlus\release\QMods\QuickSlotsPlus\" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

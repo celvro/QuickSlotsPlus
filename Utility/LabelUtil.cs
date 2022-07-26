@@ -187,7 +187,27 @@ namespace QuickSlotsPlus.Utility
             for (var i = 0; i < icons.Length; i++)
             {
                 uGUI_ItemIcon itemIcon = icons[i];
-                CreateNewText(textPrefab, itemIcon.transform, LabelUtil.getSlotKeyText(i), i);
+                var index = i;
+                // Fix for Slot Extender since first 2 Prawn slots are right and left click
+                if (Player.main.inExosuit)
+                {
+                    /*
+                     * LeftHand  = -4,
+                     * RightHand = -3,
+                     * CycleNext = -2,
+                     * CyclePrev = -1,
+                     * Slot1     = 0
+                     */
+                    if (index < 2)
+                    {
+                        index -= 4;
+                    }
+                    else
+                    {
+                        index -= 2;
+                    }
+                }
+                CreateNewText(textPrefab, itemIcon.transform, index);
             }
         }
 
@@ -208,7 +228,7 @@ namespace QuickSlotsPlus.Utility
         }
 
         // Used dnspy to rip the bones from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14
-        private static Text CreateNewText(Text prefab, Transform parent, string newText, int index = -1)
+        private static Text CreateNewText(Text prefab, Transform parent, int index = -1)
         {
             Text text = UnityEngine.Object.Instantiate(prefab);
             text.gameObject.layer = parent.gameObject.layer;
@@ -217,7 +237,7 @@ namespace QuickSlotsPlus.Utility
             text.transform.localScale = new Vector3(1f, 1f, 1f);
             text.gameObject.SetActive(true);
             text.enabled = true;
-            text.text = newText;
+            text.text = LabelUtil.getSlotKeyText(index);
             text.alignment = TextAnchor.MiddleCenter;
             RectTransformExtensions.SetParams(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), parent);
             text.rectTransform.SetSizeWithCurrentAnchors(0, 100f);

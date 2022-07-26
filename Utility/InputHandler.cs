@@ -28,7 +28,6 @@ namespace QuickSlotsPlus.Utility
             {
                 if(GetKeyDownForSlot(i))
                 {
-                    Logger.Log(Logger.Level.Debug, "Hotkey pressed for slot: " + i);
                     Inventory.main.quickSlots.SlotKeyDown(i - 1);
                 }
             }

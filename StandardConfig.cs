@@ -78,7 +78,6 @@ namespace QuickSlotsPlus
         [Button("Reset Keybinds", Tooltip = "Reset Keybinds to their default values. Close options menu to take effect.")]
         public void ResetKeybinds()
         {
-
             Mod.Config.HotKey6 = KeyCode.Alpha6;
             Mod.Config.HotKey7 = KeyCode.Alpha7;
             Mod.Config.HotKey8 = KeyCode.Alpha8;

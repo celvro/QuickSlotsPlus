@@ -22,6 +22,14 @@ A C# mod for Subnautica to add more slots.
 1. Install QModManager and SMLHelper.
 1. Extract `QMods\QuickSlotsPlus\` to `Subnautica\QMods\QuickSlotsPlus`.
 
+## Build from source
+
+1. Install Visual Studio or use msbuild.
+1. Create the publicized assemblies using https://github.com/elliotttate/Bepinex-Tools/releases
+1. Change the $(GameDir) property in the .csproj file if needed, it defaults to Steam directory on C: drive.
+1. In VS select Build -> Build Solution, it will copy the files into your QMods folder.
+1. Launch Subnautica.
+
 ## Nitrox
 
 Manually edit SMLHelper's `QMods\Modding Helper\mod.json` file and add `"NitroxCompat": true`.

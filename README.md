@@ -1,5 +1,5 @@
 
-# QuickSlots+
+# QuickSlots+ (Below Zero)
 
 A C# mod for Subnautica to add more slots.
 

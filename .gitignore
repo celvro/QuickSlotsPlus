@@ -3,6 +3,7 @@ bin/
 build/
 obj/
 release/README.md
+release_bz/README.md
 QuickSlotsPlus.csproj.user
 *.zip
 *.dll

@@ -1,8 +1,9 @@
-﻿using Oculus.Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Logger = QModManager.Utility.Logger;
@@ -177,7 +178,7 @@ namespace QuickSlotsPlus.Utility
             // Reading in "customLabels.json", keep it outside the loop
             LabelUtil.LoadCustomLabels();
 
-            Text textPrefab = GetTextPrefab();
+            TextMeshProUGUI textPrefab = GetTextPrefab();
             if (textPrefab == null)
             {
                 Logger.Log(Logger.Level.Warn, "Could not find text prefab.");
@@ -211,9 +212,9 @@ namespace QuickSlotsPlus.Utility
             }
         }
 
-        private static Text GetTextPrefab()
+        private static TMPro.TextMeshProUGUI GetTextPrefab()
         {
-            return UnityEngine.Object.FindObjectOfType<HandReticle>()?.interactPrimaryText;
+            return UnityEngine.Object.FindObjectOfType<HandReticle>()?.compTextHand;
         }
 
         private static bool ShouldShowLabels(uGUI_QuickSlots quickSlots)
@@ -228,9 +229,9 @@ namespace QuickSlotsPlus.Utility
         }
 
         // Used dnspy to rip the bones from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14
-        private static Text CreateNewText(Text prefab, Transform parent, int index = -1)
+        private static TextMeshProUGUI CreateNewText(TextMeshProUGUI prefab, Transform parent, int index = -1)
         {
-            Text text = UnityEngine.Object.Instantiate(prefab);
+            TextMeshProUGUI text = UnityEngine.Object.Instantiate(prefab);
             text.gameObject.layer = parent.gameObject.layer;
             text.gameObject.name = "QuickSlotText" + ((index >= 0) ? index.ToString() : "");
             text.transform.SetParent(parent, false);
@@ -238,7 +239,7 @@ namespace QuickSlotsPlus.Utility
             text.gameObject.SetActive(true);
             text.enabled = true;
             text.text = LabelUtil.getSlotKeyText(index);
-            text.alignment = TextAnchor.MiddleCenter;
+            text.alignment = TMPro.TextAlignmentOptions.Center;
             RectTransformExtensions.SetParams(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), parent);
             text.rectTransform.SetSizeWithCurrentAnchors(0, 100f);
             text.rectTransform.SetSizeWithCurrentAnchors((RectTransform.Axis)1, 100f);

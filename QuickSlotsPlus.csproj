@@ -104,10 +104,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release_bz\QMods\QuickSlotsPlus\"
-xcopy /F /Y "$(TargetPath)" "$(GameDir)QMods\QuickSlotsPlus\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release_bz\QMods\QuickSlotsPlus_BZ\"
+xcopy /F /Y "$(TargetPath)" "$(GameDir)QMods\QuickSlotsPlus_BZ\"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>xcopy /F /Y "$(ProjectDir)release_bz\QMods\QuickSlotsPlus\mod.json" "$(GameDir)QMods\QuickSlotsPlus\"</PreBuildEvent>
+    <PreBuildEvent>xcopy /F /Y "$(ProjectDir)release_bz\QMods\QuickSlotsPlus_BZ\mod.json" "$(GameDir)QMods\QuickSlotsPlus\"</PreBuildEvent>
   </PropertyGroup>
 </Project>

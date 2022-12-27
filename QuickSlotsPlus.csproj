@@ -26,8 +26,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>$(GameDir)BepInEx\core\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\BepInEx\core\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass_publicized">
       <HintPath>$(GameDir)Subnautica_Data\Managed\publicized_assemblies\Assembly-CSharp-firstpass_publicized.dll</HintPath>
@@ -35,15 +36,16 @@
     <Reference Include="Assembly-CSharp_publicized">
       <HintPath>$(GameDir)Subnautica_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDir)Subnautica_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="QModInstaller">
-      <HintPath>$(GameDir)BepInEx\plugins\QModManager\QModInstaller.dll</HintPath>
-    </Reference>
-    <Reference Include="SMLHelper">
-      <HintPath>$(GameDir)QMods\Modding Helper\SMLHelper.dll</HintPath>
+    <Reference Include="SMLHelper, Version=2.14.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\BepInEx\plugins\Modding Helper\SMLHelper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +56,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Subnautica\Subnautica_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDir)Subnautica_Data\Managed\UnityEngine.dll</HintPath>
@@ -81,8 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\GameInput_SetBindingInternal_Patch.cs" />
-    <Compile Include="Patches\uGUI_PDA_Patch.cs" />
-    <Compile Include="Patches\QuickSlots_Bindings_Patch.cs" />
     <Compile Include="Patches\QuickSlots_OnAddItem_Patch.cs" />
     <Compile Include="Utility\InputHandler.cs" />
     <Compile Include="Patches\uGUI_QuickSlots_Init_Patch.cs" />
@@ -98,10 +102,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\QMods\QuickSlotsPlus\"
-xcopy /F /Y "$(TargetPath)" "$(GameDir)QMods\QuickSlotsPlus\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\BepInEx\plugins\QuickSlotsPlus\"
+xcopy /F /Y "$(TargetPath)" "$(GameDir)BepInEx\plugins\QuickSlotsPlus\"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>xcopy /F /Y "$(ProjectDir)release\QMods\QuickSlotsPlus\mod.json" "$(GameDir)QMods\QuickSlotsPlus\"</PreBuildEvent>
+    <PreBuildEvent>xcopy /F /Y "$(ProjectDir)release\BepInEx\plugins\QuickSlotsPlus\mod.json" "$(GameDir)BepInEx\plugins\QuickSlotsPlus\"</PreBuildEvent>
   </PropertyGroup>
 </Project>

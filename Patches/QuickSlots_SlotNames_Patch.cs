@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using QModManager.Utility;
+﻿using BepInEx.Logging;
+using HarmonyLib;
 using QuickSlotsPlus.Utility;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -29,7 +29,7 @@ namespace QuickSlotsPlus.Patches
                 if (codes[i].opcode == OpCodes.Ldsfld)
                 {
                     codes[i].operand = AccessTools.Field(typeof(LabelUtil), "slotNames");
-                    Logger.Log(Logger.Level.Info, "Transpiled Update method with new slotnames.");
+                    Mod.logger.LogInfo("Transpiled Update method with new slotnames.");
                     break;
                 }
             }
@@ -49,7 +49,7 @@ namespace QuickSlotsPlus.Patches
                 if (codes[i].opcode == OpCodes.Ldsfld && codes[i + 1].opcode == OpCodes.Ldarg_1)
                 {
                     codes[i].operand = AccessTools.Field(typeof(LabelUtil), "slotNames");
-                    Logger.Log(Logger.Level.Info, "Transpiled SelectInternal method with new slotnames.");
+                    Mod.logger.LogInfo("Transpiled SelectInternal method with new slotnames.");
                     break;
                 }
             }
@@ -66,10 +66,10 @@ namespace QuickSlotsPlus.Patches
             var codes = new List<CodeInstruction>(instructions);
             for (var i = 0; i < codes.Count; i++)
             {
-                if (codes[i].opcode == OpCodes.Ldsfld && codes[i + 1].opcode == OpCodes.Ldloc_0)
+                if (codes[i].opcode == OpCodes.Ldsfld && codes[i + 1].opcode == OpCodes.Ldloc_1)
                 {
                     codes[i].operand = AccessTools.Field(typeof(LabelUtil), "slotNames");
-                    Logger.Log(Logger.Level.Info, "Transpiled DeselectInternal method with new slotnames.");
+                    Mod.logger.LogInfo("Transpiled DeselectInternal method with new slotnames.");
                     break;
                 }
             }

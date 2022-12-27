@@ -8,36 +8,34 @@ A C# mod for Subnautica to add more slots.
 * Up to 20 slots with hotkeys
 * Disable adding new items to the quick slots
 * Custom hotkey labels
-* Icons snap to quick slots during drag/drop
-* Save quick slot positions when you exit the game
 * Works with Nitrox
 
 ## Requirements
 
-* [QModManager 4](https://www.nexusmods.com/subnautica/mods/201)
+* [BepInEx](https://www.nexusmods.com/subnautica/mods/1108)
 * [SMLHelper](https://www.nexusmods.com/subnautica/mods/113)
 
 ## Installation
 
-1. Install QModManager and SMLHelper.
-1. Extract `QMods\QuickSlotsPlus\` to `Subnautica\QMods\QuickSlotsPlus`.
+1. Install BepInEx and the SMLHelper plugin.
+1. Copy `BepInEx\` folder into your Subnautica folder.
 
 ## Build from source
 
 1. Install Visual Studio or use msbuild.
 1. Create the publicized assemblies using https://github.com/elliotttate/Bepinex-Tools/releases
 1. Change the $(GameDir) property in the .csproj file if needed, it defaults to Steam directory on C: drive.
-1. In VS select Build -> Build Solution, it will copy the files into your QMods folder.
+1. In VS select Build -> Build Solution, it will copy the files into your BepInEx folder.
 1. Launch Subnautica.
 
 ## Nitrox
 
-Manually edit SMLHelper's `QMods\Modding Helper\mod.json` file and add `"NitroxCompat": true`.
+Manually edit SMLHelper's `BepInEx\plugins\Modding Helper\mod.json` file and add `"NitroxCompat": true`.
 
 ### Add custom labels
 
 1. Set hotkey in game, look at name.
-2. Create a file named `QMods\QuickSlotsPlus\customLabels.json`. Limited support for unicode.
+2. Create a file named `BepInEx\plugins\QuickSlotsPlus\customLabels.json`. Limited support for unicode.
 ```json
 {
     "LeftArrow": "⬅️",

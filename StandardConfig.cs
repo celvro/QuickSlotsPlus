@@ -95,6 +95,7 @@ namespace QuickSlotsPlus
             Mod.Config.HotKey20 = KeyCode.None;
 
             Mod.Config.Save();
+            RedrawQuickSlots();
             Logger.Log(Logger.Level.Debug, "Clicked reset keybinds.");
         }
 
@@ -103,7 +104,7 @@ namespace QuickSlotsPlus
          */
         public static void RedrawQuickSlots()
         {
-            Logger.Log(Logger.Level.Debug, "Redraw quick slots due to options change");
+            /*Logger.Log(Logger.Level.Debug, "Redraw quick slots due to options change");*/
             Mod.RedrawQuickSlots();
         }
     }

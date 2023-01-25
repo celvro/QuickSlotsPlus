@@ -8,8 +8,6 @@ A C# mod for Subnautica to add more slots.
 * Up to 20 slots with hotkeys
 * Disable adding new items to the quick slots
 * Custom hotkey labels
-* Icons snap to quick slots during drag/drop
-* Save quick slot positions when you exit the game
 * Works with Nitrox
 
 ## Requirements

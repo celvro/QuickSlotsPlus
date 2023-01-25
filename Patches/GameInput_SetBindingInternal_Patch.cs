@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Patches
 {
@@ -7,8 +8,8 @@ namespace QuickSlotsPlus.Patches
     /*
      * Called when QuickSlot 1-5 keybinding is set.
      */
-    [HarmonyPatch(typeof(GameInput), "SetBindingInternal", new Type[] { typeof(GameInput.Device), typeof(GameInput.Button), typeof(GameInput.BindingSet), typeof(int) })]
-    class GameInput_SetBindingInternal_Patch
+    [HarmonyPatch(typeof(GameInput), "SafeSetBinding")]
+    class GameInput_SafeSetBinding_Patch
     {
         static void Postfix()
         {

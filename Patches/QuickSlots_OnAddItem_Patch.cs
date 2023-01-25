@@ -7,12 +7,18 @@ namespace QuickSlotsPlus.Patches
     /***
      * Prevent adding new items to the QuickSlot bar.
      */
-    [HarmonyPatch(typeof(QuickSlots), "OnAddItem")]
+    [HarmonyPatch(typeof(QuickSlots), "BindToEmpty")]
     class QuickSlots_OnAddItem_Patch
     {
-        static bool Prefix(QuickSlots __instance, InventoryItem item)
+        static bool Prefix(ref int __result)
         {
-            return !Mod.Config.disableBindToEmpty || IntroVignette.isIntroActive;
+            bool shouldDisable = Mod.Config.disableBindToEmpty;
+            if (shouldDisable)
+            {
+                __result = -1;
+                return false;
+            }
+            return true;
         }
     }
 }

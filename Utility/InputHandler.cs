@@ -9,17 +9,11 @@ namespace QuickSlotsPlus.Utility
         private void Awake()
         {
             Logger.Log(Logger.Level.Info, "InputHandler loaded.");
-            Player.main.playerModeChanged.AddHandler(gameObject, new Event<Player.Mode>.HandleFunction(this.RedrawSlots));
         }
 
         private void OnDestroy()
         {
             Logger.Log(Logger.Level.Info, "InputHandler Destroyed.");
-        }
-
-        private void RedrawSlots(Player.Mode _)
-        {
-            Mod.RedrawQuickSlots();
         }
 
         public void Update()

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Utility
@@ -34,7 +33,6 @@ namespace QuickSlotsPlus.Utility
                 KeyCode keyCode = (KeyCode)Mod.Config.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Config);
                 bindingName = keyCode.ToString();
             }
-            Logger.Log(Logger.Level.Debug, $"Binding name for slot {slotId}: {bindingName}");
 
             string input = uGUI.GetDisplayTextForBinding(bindingName);
             return KeyCodeToString(input);
@@ -50,10 +48,6 @@ namespace QuickSlotsPlus.Utility
                 Logger.Log(Logger.Level.Debug, "Loaded hotkey label json: \n" + JsonConfig);
                 CustomLabels = CreateFromJSON(JsonConfig);
             }
-            else
-            {
-                Logger.Log(Logger.Level.Debug, "Did not find custom label file: " + path);
-            }
         }
 
         private static Dictionary<string, string> CreateFromJSON(string jsonString)
@@ -66,12 +60,12 @@ namespace QuickSlotsPlus.Utility
             // KeyCode was not found in Enum, try custom labels
             if (CustomLabels.TryGetValue(keyCode, out string label_1))
             {
-                Logger.Log(Logger.Level.Debug, $"Found custom label {label_1} for keycode {keyCode}");
+                /*Logger.Log(Logger.Level.Debug, $"Found custom label {label_1} for keycode {keyCode}");*/
                 return label_1;
             }
             else if (DefaultLabels.TryGetValue(keyCode, out char label_2))
             {
-                Logger.Log(Logger.Level.Debug, $"Found default custom label {label_2} for keycode {keyCode}");
+                /*Logger.Log(Logger.Level.Debug, $"Found default custom label {label_2} for keycode {keyCode}");*/
                 return label_2.ToString();
             }
             return keyCode;
@@ -189,7 +183,7 @@ namespace QuickSlotsPlus.Utility
             {
                 uGUI_ItemIcon itemIcon = icons[i];
                 var index = i;
-                // Fix for Slot Extender since first 2 Prawn slots are right and left click
+                // First 2 Prawn slots are right and left click
                 if (Player.main.inExosuit)
                 {
                     /*
@@ -233,7 +227,7 @@ namespace QuickSlotsPlus.Utility
         {
             TextMeshProUGUI text = UnityEngine.Object.Instantiate(prefab);
             text.gameObject.layer = parent.gameObject.layer;
-            text.gameObject.name = "QuickSlotText" + ((index >= 0) ? index.ToString() : "");
+            text.gameObject.name = "QuickSlotText " + index.ToString();
             text.transform.SetParent(parent, false);
             text.transform.localScale = new Vector3(1f, 1f, 1f);
             text.gameObject.SetActive(true);

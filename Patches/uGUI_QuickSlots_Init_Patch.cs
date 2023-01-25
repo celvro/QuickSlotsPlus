@@ -14,7 +14,7 @@ namespace QuickSlotsPlus.Patches
         {
             LabelUtil.DrawLabels(__instance);
 
-            Logger.Log(Logger.Level.Info, "Patched hotkey labels.");
+            /*Logger.Log(Logger.Level.Debug, "Patched hotkey labels.");*/
         }
     }
 }

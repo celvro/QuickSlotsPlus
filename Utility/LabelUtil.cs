@@ -30,9 +30,8 @@ namespace QuickSlotsPlus.Utility
             else
             {
                 KeyCode keyCode = (KeyCode)Mod.Options.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Options);
-                bindingName = keyCode.ToString();
+                bindingName = GameInput.GetInputName(GameInput.GetKeyCodeAsInputName(keyCode));
             }
-            Mod.logger.LogDebug($"Binding name for slot {slotId}: {bindingName}");
 
             string input = uGUI.GetDisplayTextForBinding(bindingName);
             return KeyCodeToString(input);
@@ -188,7 +187,7 @@ namespace QuickSlotsPlus.Utility
                 uGUI_ItemIcon itemIcon = icons[i];
                 var index = i;
                 // Fix for Slot Extender since first 2 Prawn slots are right and left click
-                if (Player.main.inExosuit)
+                if (Player.main.inExosuit && !Player.main.pda.isInUse)
                 {
                     /*
                      * LeftHand  = -4,

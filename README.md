@@ -10,15 +10,18 @@ A C# mod for Subnautica to add more slots.
 * Custom hotkey labels
 * Works with Nitrox
 
+> **Warning**
+> Switched from SMLHelper to Nautilus, make sure to update.
+
 ## Requirements
 
 * [BepInEx](https://www.nexusmods.com/subnautica/mods/1108)
-* [SMLHelper](https://www.nexusmods.com/subnautica/mods/113)
+* [Nautilus](https://www.nexusmods.com/subnautica/mods/1262) (formerly SMLHelper)
 
 ## Installation
 
-1. Install BepInEx and the SMLHelper plugin.
-1. Copy `BepInEx\` folder into your Subnautica folder.
+1. Install BepInEx and the Nautilus plugin.
+1. Extract `BepInEx\` folder from downloaded QuickSlotsPlus.zip into your Subnautica folder.
 
 ## Build from source
 
@@ -28,9 +31,15 @@ A C# mod for Subnautica to add more slots.
 1. In VS select Build -> Build Solution, it will copy the files into your BepInEx folder.
 1. Launch Subnautica.
 
+## Controller Support
+
+Now supports Controller icons on hotbar!
+
 ## Nitrox
 
-Manually edit SMLHelper's `BepInEx\plugins\Modding Helper\mod.json` file and add `"NitroxCompat": true`.
+Manually edit Nautilus's `BepInEx\plugins\Modding Helper\mod.json` file and add `"NitroxCompat": true`.
+
+Warning: Did not test this after the switch from SMLHelper to Nautilus.
 
 ### Add custom labels
 
@@ -47,8 +56,14 @@ You can override them with the KeyCode name.
 
 ## Known issues
 
-* Controller hotkeys don't work for slots 6-20
 * Can't use CTRL or ALT modifiers for hotkeys
 * Sometimes while testing Nitrox my equipped tool icon disappeared
+
+## Changes
+
+### 2.0 (Nautilus update)
+
+* Updated from SMLHelper to Nautilus
+* Fixed display of controller icons for slot labels
 
 [Noticed a bug?](https://github.com/celvro/QuickSlotsPlus/issues)

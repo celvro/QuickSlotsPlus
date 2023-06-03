@@ -1,7 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using SMLHelper.V2.Handlers;
+using Nautilus.Handlers;
 using QuickSlotsPlus.Patches;
 
 namespace QuickSlotsPlus
@@ -10,11 +10,11 @@ namespace QuickSlotsPlus
     [BepInPlugin(myGUID, pluginName, versionString)]
     public class Mod : BaseUnityPlugin
     {
-        internal static StandardConfig Options { get; } = OptionsPanelHandler.Main.RegisterModOptions<StandardConfig>();
+        internal static StandardConfig Options { get; } = OptionsPanelHandler.RegisterModOptions<StandardConfig>();
 
         private const string myGUID = "com.celvro.subnautica.quickslotsplus";
         private const string pluginName = "Quick Slots Plus";
-        private const string versionString = "1.4.0";
+        private const string versionString = "2.0.0";
 
         private static readonly Harmony harmony = new Harmony(myGUID);
 

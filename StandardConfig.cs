@@ -1,5 +1,6 @@
-﻿using SMLHelper.V2.Json;
-using SMLHelper.V2.Options.Attributes;
+﻿using Nautilus.Json;
+using Nautilus.Options;
+using Nautilus.Options.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -75,7 +76,7 @@ namespace QuickSlotsPlus
         public KeyCode HotKey20;
 
         [Button("Reset Keybinds", Tooltip = "Reset Keybinds to their default values. Close options menu to take effect.")]
-        public void ResetKeybinds()
+        public void ResetKeybinds(ButtonClickedEventArgs eventArgs)
         {
             Mod.Options.HotKey6 = KeyCode.Alpha6;
             Mod.Options.HotKey7 = KeyCode.Alpha7;

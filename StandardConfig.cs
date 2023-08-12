@@ -75,7 +75,7 @@ namespace QuickSlotsPlus
         [Keybind("Slot 20"), OnChange(nameof(RedrawQuickSlots))]
         public KeyCode HotKey20;
 
-        [Button("Reset Keybinds", Tooltip = "Reset Keybinds to their default values. Close options menu to take effect.")]
+        /*[Button("Reset Keybinds", Tooltip = "Reset Keybinds to their default values. Close options menu to take effect.")]
         public void ResetKeybinds(ButtonClickedEventArgs eventArgs)
         {
             Mod.Options.HotKey6 = KeyCode.Alpha6;
@@ -95,8 +95,11 @@ namespace QuickSlotsPlus
             Mod.Options.HotKey20 = KeyCode.None;
 
             Mod.Options.Save();
+            Mod.RedrawQuickSlots();
+
+
             Mod.logger.LogDebug("Clicked reset keybinds.");
-        }
+        }*/
 
         /* 
          * Redraw the QuickSlots after user changes preferences in settings menu.

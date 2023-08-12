@@ -104,7 +104,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release_bz\QMods\QuickSlotsPlus_BZ\"
-xcopy /F /Y "$(TargetPath)" "$(GameDir)QMods\QuickSlotsPlus_BZ\"</PostBuildEvent>
+xcopy /F /Y "$(TargetPath)" "$(GameDir)BepInEx\plugins\QuickSlotsPlus_BZ\"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

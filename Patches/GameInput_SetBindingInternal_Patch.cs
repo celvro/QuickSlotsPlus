@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using System;
-using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Patches
 {

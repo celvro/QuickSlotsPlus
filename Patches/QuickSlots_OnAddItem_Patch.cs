@@ -11,7 +11,7 @@ namespace QuickSlotsPlus.Patches
     {
         static bool Prefix(ref int __result)
         {
-            bool shouldDisable = Mod.Config.disableBindToEmpty;
+            bool shouldDisable = Mod.Options.disableBindToEmpty;
             if (shouldDisable)
             {
                 __result = -1;

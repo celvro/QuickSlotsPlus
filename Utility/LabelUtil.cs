@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
-using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Utility
 {
@@ -30,8 +29,8 @@ namespace QuickSlotsPlus.Utility
             }
             else
             {
-                KeyCode keyCode = (KeyCode)Mod.Config.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Config);
-                bindingName = keyCode.ToString();
+                KeyCode keyCode = (KeyCode)Mod.Options.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Options);
+                bindingName = GameInput.GetInputName(GameInput.GetKeyCodeAsInputName(keyCode));
             }
 
             string input = uGUI.GetDisplayTextForBinding(bindingName);
@@ -45,8 +44,12 @@ namespace QuickSlotsPlus.Utility
             if (File.Exists(path))
             {
                 var JsonConfig = File.ReadAllText(path);
-                Logger.Log(Logger.Level.Debug, "Loaded hotkey label json: \n" + JsonConfig);
+                Mod.logger.LogDebug("Loaded hotkey label json: \n" + JsonConfig);
                 CustomLabels = CreateFromJSON(JsonConfig);
+            }
+            else
+            {
+                Mod.logger.LogDebug("Did not find custom label file: " + path);
             }
         }
 
@@ -60,12 +63,12 @@ namespace QuickSlotsPlus.Utility
             // KeyCode was not found in Enum, try custom labels
             if (CustomLabels.TryGetValue(keyCode, out string label_1))
             {
-                /*Logger.Log(Logger.Level.Debug, $"Found custom label {label_1} for keycode {keyCode}");*/
+                Mod.logger.LogDebug($"Found custom label {label_1} for keycode {keyCode}");
                 return label_1;
             }
             else if (DefaultLabels.TryGetValue(keyCode, out char label_2))
             {
-                /*Logger.Log(Logger.Level.Debug, $"Found default custom label {label_2} for keycode {keyCode}");*/
+                Mod.logger.LogDebug($"Found default custom label {label_2} for keycode {keyCode}");
                 return label_2.ToString();
             }
             return keyCode;
@@ -170,12 +173,12 @@ namespace QuickSlotsPlus.Utility
             }
 
             // Reading in "customLabels.json", keep it outside the loop
-            LabelUtil.LoadCustomLabels();
+            LoadCustomLabels();
 
             TextMeshProUGUI textPrefab = GetTextPrefab();
             if (textPrefab == null)
             {
-                Logger.Log(Logger.Level.Warn, "Could not find text prefab.");
+                Mod.logger.LogDebug("Could not find text prefab.");
                 return;
             }
 
@@ -184,7 +187,7 @@ namespace QuickSlotsPlus.Utility
                 uGUI_ItemIcon itemIcon = icons[i];
                 var index = i;
                 // First 2 Prawn slots are right and left click
-                if (Player.main.inExosuit)
+                if (Player.main.inExosuit && !Player.main.pda.isInUse)
                 {
                     /*
                      * LeftHand  = -4,
@@ -206,44 +209,44 @@ namespace QuickSlotsPlus.Utility
             }
         }
 
-        private static TMPro.TextMeshProUGUI GetTextPrefab()
+        private static TextMeshProUGUI GetTextPrefab()
         {
-            return UnityEngine.Object.FindObjectOfType<HandReticle>()?.compTextHand;
+            return Object.FindObjectOfType<HandReticle>()?.compTextHand;
         }
 
         private static bool ShouldShowLabels(uGUI_QuickSlots quickSlots)
         {
-            if (quickSlots == null || !Mod.Config.showLabels)
+            if (quickSlots == null || !Mod.Options.showLabels)
             {
                 return false;
             }
 
             Player player = Player.main;
-            return player != null && (player.GetMode() == Player.Mode.Normal || Mod.Config.showLabelsWhilePiloting);
+            return player != null && (player.GetMode() == Player.Mode.Normal || Mod.Options.showLabelsWhilePiloting);
         }
 
         // Used dnspy to rip the bones from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14
         private static TextMeshProUGUI CreateNewText(TextMeshProUGUI prefab, Transform parent, int index = -1)
         {
-            TextMeshProUGUI text = UnityEngine.Object.Instantiate(prefab);
+            TextMeshProUGUI text = Object.Instantiate(prefab);
             text.gameObject.layer = parent.gameObject.layer;
             text.gameObject.name = "QuickSlotText " + index.ToString();
             text.transform.SetParent(parent, false);
             text.transform.localScale = new Vector3(1f, 1f, 1f);
             text.gameObject.SetActive(true);
             text.enabled = true;
-            text.text = LabelUtil.getSlotKeyText(index);
-            text.alignment = TMPro.TextAlignmentOptions.Center;
+            text.text = getSlotKeyText(index);
+            text.alignment = TextAlignmentOptions.Center;
             RectTransformExtensions.SetParams(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), parent);
             text.rectTransform.SetSizeWithCurrentAnchors(0, 100f);
             text.rectTransform.SetSizeWithCurrentAnchors((RectTransform.Axis)1, 100f);
             text.raycastTarget = false;
 
             // **** Set config options ****
-            text.fontSize = (int)Mod.Config.labelSize;
+            text.fontSize = (int)Mod.Options.labelSize;
 
-            float xPos = Mod.Config.labelXpos;
-            float yPos = Mod.Config.labelYpos - 36f; // Subtract 36 to make default position be below the icons
+            float xPos = Mod.Options.labelXpos;
+            float yPos = Mod.Options.labelYpos - 36f; // Subtract 36 to make default position be below the icons
             text.rectTransform.anchoredPosition = new Vector3(xPos, yPos);
 
             return text;

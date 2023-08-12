@@ -1,25 +1,30 @@
-﻿using HarmonyLib;
-using SMLHelper.V2.Handlers;
-using QModManager.API.ModLoading;
-using Logger = QModManager.Utility.Logger;
+﻿using BepInEx;
+using BepInEx.Logging;
+using HarmonyLib;
+using Nautilus.Handlers;
 using QuickSlotsPlus.Patches;
 
 namespace QuickSlotsPlus
 {
 
-    [QModCore]
-    public static class Mod
+    [BepInPlugin(myGUID, pluginName, versionString)]
+    public class Mod : BaseUnityPlugin
     {
-        internal static StandardConfig Config { get; } = OptionsPanelHandler.Main.RegisterModOptions<StandardConfig>();
+        internal static StandardConfig Options { get; } = OptionsPanelHandler.RegisterModOptions<StandardConfig>();
 
-        [QModPatch]
-        public static void Load()
+        private const string myGUID = "com.celvro.subnautica.quickslotsplus";
+        private const string pluginName = "Quick Slots Plus";
+        private const string versionString = "2.0.0";
+
+        private static readonly Harmony harmony = new Harmony(myGUID);
+
+        public static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("QuickSlots+");
+
+        private void Awake()
         {
-            Config.Load();
-            Logger.Log(Logger.Level.Info, "Loaded Config.");
-
-            Harmony harmony = new Harmony("com.celvro.subnautica.quickslotsplus");
+            Options.Load();
             harmony.PatchAll();
+            logger.LogInfo(pluginName + " " + versionString + " " + "loaded.");
         }
 
         /*

@@ -1,8 +1,8 @@
-﻿using SMLHelper.V2.Json;
-using SMLHelper.V2.Options.Attributes;
+﻿using Nautilus.Json;
+using Nautilus.Options;
+using Nautilus.Options.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
-using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus
 {
@@ -76,27 +76,26 @@ namespace QuickSlotsPlus
         public KeyCode HotKey20;
 
         [Button("Reset Keybinds", Tooltip = "Reset Keybinds to their default values. Close options menu to take effect.")]
-        public void ResetKeybinds()
+        public void ResetKeybinds(ButtonClickedEventArgs eventArgs)
         {
-            Mod.Config.HotKey6 = KeyCode.Alpha6;
-            Mod.Config.HotKey7 = KeyCode.Alpha7;
-            Mod.Config.HotKey8 = KeyCode.Alpha8;
-            Mod.Config.HotKey9 = KeyCode.Alpha9;
-            Mod.Config.HotKey10 = KeyCode.Alpha0;
-            Mod.Config.HotKey11 = KeyCode.Minus;
-            Mod.Config.HotKey12 = KeyCode.Equals;
-            Mod.Config.HotKey13 = KeyCode.None;
-            Mod.Config.HotKey14 = KeyCode.None;
-            Mod.Config.HotKey15 = KeyCode.None;
-            Mod.Config.HotKey16 = KeyCode.None;
-            Mod.Config.HotKey17 = KeyCode.None;
-            Mod.Config.HotKey18 = KeyCode.None;
-            Mod.Config.HotKey19 = KeyCode.None;
-            Mod.Config.HotKey20 = KeyCode.None;
+            Mod.Options.HotKey6 = KeyCode.Alpha6;
+            Mod.Options.HotKey7 = KeyCode.Alpha7;
+            Mod.Options.HotKey8 = KeyCode.Alpha8;
+            Mod.Options.HotKey9 = KeyCode.Alpha9;
+            Mod.Options.HotKey10 = KeyCode.Alpha0;
+            Mod.Options.HotKey11 = KeyCode.Minus;
+            Mod.Options.HotKey12 = KeyCode.Equals;
+            Mod.Options.HotKey13 = KeyCode.None;
+            Mod.Options.HotKey14 = KeyCode.None;
+            Mod.Options.HotKey15 = KeyCode.None;
+            Mod.Options.HotKey16 = KeyCode.None;
+            Mod.Options.HotKey17 = KeyCode.None;
+            Mod.Options.HotKey18 = KeyCode.None;
+            Mod.Options.HotKey19 = KeyCode.None;
+            Mod.Options.HotKey20 = KeyCode.None;
 
-            Mod.Config.Save();
-            RedrawQuickSlots();
-            Logger.Log(Logger.Level.Debug, "Clicked reset keybinds.");
+            Mod.Options.Save();
+            Mod.logger.LogDebug("Clicked reset keybinds.");
         }
 
         /* 
@@ -104,7 +103,7 @@ namespace QuickSlotsPlus
          */
         public static void RedrawQuickSlots()
         {
-            /*Logger.Log(Logger.Level.Debug, "Redraw quick slots due to options change");*/
+            Mod.logger.LogDebug("Redraw quick slots due to options change");
             Mod.RedrawQuickSlots();
         }
     }

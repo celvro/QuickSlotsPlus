@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UWE;
-using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Utility
 {
@@ -8,17 +7,18 @@ namespace QuickSlotsPlus.Utility
     {
         private void Awake()
         {
-            Logger.Log(Logger.Level.Info, "InputHandler loaded.");
+            Mod.logger.LogInfo("InputHandler loaded.");
+            Player.main.playerModeChanged.AddHandler(gameObject, new Event<Player.Mode>.HandleFunction(this.RedrawSlots));
         }
 
         private void OnDestroy()
         {
-            Logger.Log(Logger.Level.Info, "InputHandler Destroyed.");
+            Mod.logger.LogInfo("InputHandler Destroyed.");
         }
 
         public void Update()
         {
-            for(var i = 6; i <= Mod.Config.slotCount; i++)
+            for(var i = 6; i <= Mod.Options.slotCount; i++)
             {
                 if(GetKeyDownForSlot(i))
                 {
@@ -35,7 +35,7 @@ namespace QuickSlotsPlus.Utility
         public static KeyCode getSlotKey(int slotId)
         {
 
-            return (KeyCode)Mod.Config.GetType().GetField("HotKey" + slotId).GetValue(Mod.Config);
+            return (KeyCode)Mod.Options.GetType().GetField("HotKey" + slotId).GetValue(Mod.Options);
         }
     }
 }

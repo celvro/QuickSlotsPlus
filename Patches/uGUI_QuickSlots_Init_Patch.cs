@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using QuickSlotsPlus.Utility;
-using Logger = QModManager.Utility.Logger;
 
 namespace QuickSlotsPlus.Patches
 {
@@ -13,8 +12,6 @@ namespace QuickSlotsPlus.Patches
         public static void Postfix(uGUI_QuickSlots __instance)
         {
             LabelUtil.DrawLabels(__instance);
-
-            /*Logger.Log(Logger.Level.Debug, "Patched hotkey labels.");*/
         }
     }
 }

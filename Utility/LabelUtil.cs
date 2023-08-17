@@ -186,8 +186,8 @@ namespace QuickSlotsPlus.Utility
             {
                 uGUI_ItemIcon itemIcon = icons[i];
                 var index = i;
-                // Fix for Slot Extender since first 2 Prawn slots are right and left click
-                if (Player.main.inExosuit && !Player.main.pda.isInUse)
+                // Fix for slot labels since first 2 Prawn slots are right and left click
+                if (Player.main.inExosuit && PDAClosed())
                 {
                     /*
                      * LeftHand  = -4,
@@ -207,6 +207,12 @@ namespace QuickSlotsPlus.Utility
                 }
                 CreateNewText(textPrefab, itemIcon.transform, index);
             }
+        }
+
+        private static bool PDAClosed()
+        {
+            PDA.State state = Player.main.pda.state;
+            return state == PDA.State.Closed || state == PDA.State.Closing;
         }
 
         private static TextMeshProUGUI GetTextPrefab()

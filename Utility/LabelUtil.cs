@@ -49,7 +49,7 @@ namespace QuickSlotsPlus.Utility
             }
             else
             {
-                Mod.logger.LogDebug("Did not find custom label file: " + path);
+                Mod.logger.LogDebug("No custom labels found in: " + path + ". Skipping.");
             }
         }
 
@@ -60,7 +60,7 @@ namespace QuickSlotsPlus.Utility
 
         public static string KeyCodeToString(string keyCode)
         {
-            // KeyCode was not found in Enum, try custom labels
+            // Check custom label file for keycodes first
             if (CustomLabels.TryGetValue(keyCode, out string label_1))
             {
                 Mod.logger.LogDebug($"Found custom label {label_1} for keycode {keyCode}");
@@ -68,7 +68,6 @@ namespace QuickSlotsPlus.Utility
             }
             else if (DefaultLabels.TryGetValue(keyCode, out char label_2))
             {
-                Mod.logger.LogDebug($"Found default custom label {label_2} for keycode {keyCode}");
                 return label_2.ToString();
             }
             return keyCode;
@@ -250,6 +249,7 @@ namespace QuickSlotsPlus.Utility
 
             // **** Set config options ****
             text.fontSize = (int)Mod.Options.labelSize;
+            text.color = Mod.Options.color;
 
             float xPos = Mod.Options.labelXpos;
             float yPos = Mod.Options.labelYpos - 36f; // Subtract 36 to make default position be below the icons

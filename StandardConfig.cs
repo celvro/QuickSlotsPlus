@@ -15,11 +15,17 @@ namespace QuickSlotsPlus
         [Toggle("Do Not Add New Items to Empty Slots")]
         public bool disableBindToEmpty = true;
 
+        [Toggle("Mixed Input Mode", Tooltip = "Prevent items from unequiping when switching between keyboard and controller. Will also cause labels not to switch automatically."), OnChange(nameof(RedrawQuickSlots))]
+        public bool mixedInputMode = false;
+
         [Toggle("Show HotKey labels"), OnChange(nameof(RedrawQuickSlots))]
         public bool showLabels = true;
 
         [Toggle("Show labels while piloting Vehicles", Tooltip = "Exit vehicle to take effect")]
         public bool showLabelsWhilePiloting = false;
+
+        [ColorPicker("Label Color", Advanced = true), OnChange(nameof(RedrawQuickSlots))]
+        public Color color = Color.white;
 
         [Slider("Label Size", 8, 50, DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
         public float labelSize = 20;

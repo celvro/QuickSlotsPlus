@@ -18,6 +18,7 @@ namespace QuickSlotsPlus.Utility
 
         private void RedrawSlots(Player.Mode _)
         {
+            Mod.logger.LogDebug("Redraw slots for InputHandler.Awake");
             Mod.RedrawQuickSlots();
         }
 

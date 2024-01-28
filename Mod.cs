@@ -15,7 +15,7 @@ namespace QuickSlotsPlus
 
         private const string myGUID = "com.celvro.subnautica.quickslotsplus";
         private const string pluginName = "Quick Slots Plus";
-        private const string versionString = "2.0.2";
+        private const string versionString = "2.1.1";
 
         private static readonly Harmony harmony = new Harmony(myGUID);
 
@@ -45,13 +45,13 @@ namespace QuickSlotsPlus
             // Destroy and then redraw Quickslots (including HotKey labels)
             Inventory_Awake_Patch.Postfix(Inventory.main);
 
-            // Need a large enough array in case QuickSlot size is increased
-            InventoryItem[] newBinding = new InventoryItem[20];
-            for (var i = 0; i < oldBinding.Length; i++)
+            // Restore QuickSlot selections so items don't get cleared off the bar
+            InventoryItem[] newBinding = new InventoryItem[Options.slotCount];
+            for (var i = 0; i < oldBinding.Length && i < Options.slotCount; i++)
             {
                 newBinding[i] = oldBinding[i];
             }
-            // Restore QuickSlot selections
+
             Inventory.main.quickSlots.binding = newBinding;
         }
     }

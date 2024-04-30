@@ -10,7 +10,7 @@ A C# mod for Subnautica to add more slots.
 * Custom hotkey labels
 * Works with Nitrox
 
-> **Warning**
+> [!Warning]
 > Switched from SMLHelper to Nautilus, make sure to update.
 
 ## Requirements

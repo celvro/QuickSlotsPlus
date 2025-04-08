@@ -20,8 +20,13 @@ A C# mod for Subnautica to add more slots.
 
 ## Installation
 
+Automatic:
+Use the Vortex mod manager to install from [NexusMods](https://www.nexusmods.com/subnautica/mods/984?tab=files).
+
+Manual:
 1. Install BepInEx and the Nautilus plugin.
-1. Extract `BepInEx\` folder from downloaded QuickSlotsPlus.zip into your Subnautica folder.
+2. Download zipfile from the [releases page](https://github.com/celvro/QuickSlotsPlus/releases) and extract.
+3. Copy the `BepInEx\` folder to your game directory. The path should end up like `Subnautica\BepInEx\plugins\QuickSlotsPlus`.
 
 ## Build from source
 
@@ -43,10 +48,17 @@ Warning: Did not test this after the switch from SMLHelper to Nautilus.
 
 ### Reserve Item Slots
 
-You can edit `BepInEx\plugins\QuickSlotsPlus\allowItems.json` to allow/reserve items to auto equip to specific slots.
+You can add a file named `BepInEx\plugins\QuickSlotsPlus\allowItems.json` to allow/reserve items to auto equip to specific slots.
 The first value is the TechType, and the second is the slot number to reserve. Use -1 to equip to the first empty non-reserved slot.
 
-If a slot number is set, other items will not auto assign to this slot, and if you manually assign a different item it will be replaced with the reserved item when picked up.
+For example to reserve slot 5 for Knife and choose the first empty slot for Flares:
+```json
+{
+    "Knife": 5,
+    "Flare": -1
+}
+```
+To find the TechType, look in the Nautilus debug log after picking up an item.
 
 ### Add custom labels
 

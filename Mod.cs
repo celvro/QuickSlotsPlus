@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using Nautilus.Handlers;
@@ -15,7 +16,7 @@ namespace QuickSlotsPlus
 
         private const string myGUID = "com.celvro.subnautica.quickslotsplus";
         private const string pluginName = "Quick Slots Plus";
-        private const string versionString = "2.1.1";
+        private const string versionString = "2.2.0";
 
         private static readonly Harmony harmony = new Harmony(myGUID);
 

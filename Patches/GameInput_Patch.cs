@@ -7,7 +7,7 @@ namespace QuickSlotsPlus.Patches
     /*
      * Called when QuickSlot 1-5 keybinding is set.
      */
-    [HarmonyPatch(typeof(GameInput), "SafeSetBinding", new Type[] { typeof(GameInput.Device), typeof(GameInput.Button), typeof(GameInput.BindingSet), typeof(string) })]
+    [HarmonyPatch(typeof(GameInput), nameof(GameInput.SafeSetBinding), new Type[] { typeof(GameInput.Device), typeof(GameInput.Button), typeof(GameInput.BindingSet), typeof(string) })]
     class GameInput_SafeSetBinding_Patch
     {
         static void Postfix()
@@ -17,7 +17,7 @@ namespace QuickSlotsPlus.Patches
         }
     }
 
-    [HarmonyPatch(typeof(GameInput), "Awake")]
+    [HarmonyPatch(typeof(GameInput), nameof(GameInput.Awake))]
     class GameInput_Awake_Patch
     {
         static void Postfix()

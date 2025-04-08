@@ -41,6 +41,13 @@ Manually edit Nautilus's `BepInEx\plugins\Modding Helper\mod.json` file and add 
 
 Warning: Did not test this after the switch from SMLHelper to Nautilus.
 
+### Reserve Item Slots
+
+You can edit `BepInEx\plugins\QuickSlotsPlus\allowItems.json` to allow/reserve items to auto equip to specific slots.
+The first value is the TechType, and the second is the slot number to reserve. Use -1 to equip to the first empty non-reserved slot.
+
+If a slot number is set, other items will not auto assign to this slot, and if you manually assign a different item it will be replaced with the reserved item when picked up.
+
 ### Add custom labels
 
 1. Set hotkey in game, look at name.

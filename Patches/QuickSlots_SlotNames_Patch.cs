@@ -17,8 +17,7 @@ namespace QuickSlotsPlus.Patches
      * flickering and makes items unusable. I couldn't determine what triggers this, but we can transpile the few methods that
      * call the "slotNames" variable and load our own to avoid it.
      */
-    [HarmonyPatch(typeof(QuickSlots))]
-    [HarmonyPatch("Update")]
+    [HarmonyPatch(typeof(QuickSlots), nameof(QuickSlots.Update))]
     class QuickSlots_SlotNames_Patch
     {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -37,8 +36,7 @@ namespace QuickSlotsPlus.Patches
         }
     }
 
-    [HarmonyPatch(typeof(QuickSlots))]
-    [HarmonyPatch("SelectInternal")]
+    [HarmonyPatch(typeof(QuickSlots), nameof(QuickSlots.SelectInternal))]
     class QuickSlots_SelectInternal_Patch
     {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -57,8 +55,7 @@ namespace QuickSlotsPlus.Patches
         }
     }
 
-    [HarmonyPatch(typeof(QuickSlots))]
-    [HarmonyPatch("DeselectInternal")]
+    [HarmonyPatch(typeof(QuickSlots), nameof(QuickSlots.DeselectInternal))]
     class QuickSlots_DeselectInternal_Patch
     {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)

@@ -9,13 +9,13 @@ namespace QuickSlotsPlus
     [Menu("QuickSlots+")]
     public class StandardConfig : ConfigFile
     {
-        [Slider("QuickSlot Count", 5, 20, DefaultValue = 10), OnChange(nameof(RedrawQuickSlots))]
+        [Slider("QuickSlot Count", 0, 20, DefaultValue = 10, Tooltip = "Reload the game if you reduce this below 5."), OnChange(nameof(RedrawQuickSlots))]
         public int slotCount = 10;
 
-        [Toggle("Do Not Add New Items to Empty Slots")]
+        [Toggle("Do Not Add New Items to Empty Slots", Tooltip = "You can override this for individual slots in BepInEx/plugins/QuickSlotsPlus/allowItems.json")]
         public bool disableBindToEmpty = true;
 
-        [Toggle("Mixed Input Mode", Tooltip = "Prevent items from unequiping when switching between keyboard and controller. Will also cause labels not to switch automatically."), OnChange(nameof(RedrawQuickSlots))]
+        [Toggle("Mixed Input Mode", Tooltip = "Prevent items from unequiping, and labels from switching, when using keyboard and controller at the same time."), OnChange(nameof(RedrawQuickSlots))]
         public bool mixedInputMode = false;
 
         [Toggle("Show HotKey labels"), OnChange(nameof(RedrawQuickSlots))]
@@ -27,7 +27,7 @@ namespace QuickSlotsPlus
         [ColorPicker("Label Color", Advanced = true), OnChange(nameof(RedrawQuickSlots))]
         public Color color = Color.white;
 
-        [Slider("Label Size", 8, 50, DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
+        [Slider("Label Size", 8, 100, DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
         public float labelSize = 20;
 
         [Slider("Horizontal Position", -20, 20, DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]

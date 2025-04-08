@@ -3,7 +3,7 @@ using QuickSlotsPlus.Utility;
 
 namespace QuickSlotsPlus.Patches
 {
-    [HarmonyPatch(typeof(Inventory), "Awake")]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.Awake))]
     public class Inventory_Awake_Patch
     {
         // https://github.com/DanielLavrushin/SaubNauticaBZ_QuickSlotsMod/blob/fc02a3c73d76aad3aa03aa08eb1a18bb467d00ac/QuickSlots/Patches/Inventory_Awake_Patch.cs#L16

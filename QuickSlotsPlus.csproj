@@ -86,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\GameInput_Patch.cs" />
-    <Compile Include="Patches\QuickSlots_OnAddItem_Patch.cs" />
+    <Compile Include="Patches\QuickSlots_BindToEmpty_Patch.cs" />
     <Compile Include="Utility\InputHandler.cs" />
     <Compile Include="Patches\uGUI_QuickSlots_Init_Patch.cs" />
     <Compile Include="StandardConfig.cs" />

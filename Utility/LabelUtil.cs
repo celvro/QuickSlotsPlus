@@ -44,12 +44,12 @@ namespace QuickSlotsPlus.Utility
             if (File.Exists(path))
             {
                 var JsonConfig = File.ReadAllText(path);
-                Mod.logger.LogDebug("Loaded hotkey label json: \n" + JsonConfig);
+                // Mod.logger.LogDebug("Loaded hotkey label json: \n" + JsonConfig);
                 CustomLabels = CreateFromJSON(JsonConfig);
             }
             else
             {
-                Mod.logger.LogDebug("No custom labels found in: " + path + ". Skipping.");
+                // Mod.logger.LogDebug("No custom labels found in: " + path + ". Skipping.");
             }
         }
 
@@ -63,7 +63,7 @@ namespace QuickSlotsPlus.Utility
             // Check custom label file for keycodes first
             if (CustomLabels.TryGetValue(keyCode, out string label_1))
             {
-                Mod.logger.LogDebug($"Found custom label {label_1} for keycode {keyCode}");
+                // Mod.logger.LogDebug($"Found custom label {label_1} for keycode {keyCode}");
                 return label_1;
             }
             else if (DefaultLabels.TryGetValue(keyCode, out char label_2))

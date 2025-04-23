@@ -1,4 +1,3 @@
-.vs/QuickSlotsPlus/FileContentIndex/
 bin/
 build/
 obj/
@@ -6,3 +5,4 @@ release/README.md
 QuickSlotsPlus.csproj.user
 *.zip
 *.dll
+.vs/

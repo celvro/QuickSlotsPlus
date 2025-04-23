@@ -5,20 +5,20 @@ namespace QuickSlotsPlus.Utility
 {
     public class InputHandler : MonoBehaviour
     {
-        private void Awake()
+        public void Awake()
         {
             Mod.logger.LogInfo("InputHandler loaded.");
             Player.main.playerModeChanged.AddHandler(gameObject, new Event<Player.Mode>.HandleFunction(this.RedrawSlots));
         }
 
-        private void OnDestroy()
+        public void OnDestroy()
         {
             Mod.logger.LogInfo("InputHandler Destroyed.");
         }
 
         private void RedrawSlots(Player.Mode _)
         {
-            Mod.logger.LogDebug("Redraw slots for InputHandler.Awake");
+            // Mod.logger.LogDebug("Redraw slots because Player mode changed.");
             Mod.RedrawQuickSlots();
         }
 

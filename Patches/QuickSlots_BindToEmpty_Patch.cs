@@ -12,7 +12,7 @@ namespace QuickSlotsPlus.Patches
      * Prevent adding new items to the QuickSlot bar.
      */
     [HarmonyPatch(typeof(QuickSlots), nameof(QuickSlots.BindToEmpty))]
-    class QuickSlots_OnAddItem_Patch
+    class QuickSlots_BindToEmpty_Patch
     {
         static bool Prefix(InventoryItem item, ref int __result, QuickSlots __instance)
         {

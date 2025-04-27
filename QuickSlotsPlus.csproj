@@ -58,12 +58,12 @@
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\$(ConfigurationName)\BepInEx\plugins\QuickSlotsPlus\"
+  <PropertyGroup Condition="'$(Configuration)' == 'Subnautica'">
+    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\$(Configuration)\BepInEx\plugins\QuickSlotsPlus\"
 xcopy /F /Y "$(TargetPath)" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus\"</PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+  <PropertyGroup Condition="'$(Configuration)' == 'BelowZero'">
+    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\$(Configuration)\BepInEx\plugins\QuickSlotsPlus_BZ\"
+xcopy /F /Y "$(TargetPath)" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus_BZ\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

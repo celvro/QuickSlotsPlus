@@ -16,7 +16,7 @@ namespace QuickSlotsPlus
 
         private const string myGUID = "com.celvro.subnautica.quickslotsplus";
         private const string pluginName = "Quick Slots Plus";
-        private const string versionString = "2.2.0";
+        private const string versionString = "2.2.1";
 
         private static readonly Harmony harmony = new Harmony(myGUID);
 

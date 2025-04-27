@@ -3,7 +3,9 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using HarmonyLib;
+using Nautilus.Utility;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace QuickSlotsPlus.Patches
 {
@@ -18,7 +20,11 @@ namespace QuickSlotsPlus.Patches
         {
             Mod.logger.LogDebug($"Picked up item, TechType: {item.techType}");
 
+#if SUBNAUTICA
             bool disabled = Mod.Options.disableBindToEmpty && !IntroLifepodDirector.IsActive;
+#else
+            bool disabled = Mod.Options.disableBindToEmpty;
+#endif
             if (!disabled || ItemHelper.AllowedTechType(item))
             {
                 var reservedSlot = ItemHelper.ReservedSlot(item);
@@ -93,7 +99,15 @@ namespace QuickSlotsPlus.Patches
             if (File.Exists(path))
             {
                 var jsonString = File.ReadAllText(path);
-                allowedTechtypes = JsonConvert.DeserializeObject<Dictionary<string, int>>(StripComments(jsonString));
+                try
+                {
+                    allowedTechtypes = JsonConvert.DeserializeObject<Dictionary<string, int>>(StripComments(jsonString));
+                }
+                catch(JsonReaderException ex)
+                {
+                    BasicText error = new(0, 100, 20, Color.red);
+                    error.ShowMessage($"[QuickSlotsPlus] Error reading allowItems.json\n{ex.Message}", 15);
+                }
                 // Mod.logger.LogDebug("Parsed allowedItems.json");
             }
             else

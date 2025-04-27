@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Nautilus.Utility;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,7 +56,15 @@ namespace QuickSlotsPlus.Utility
 
         private static Dictionary<string, string> CreateFromJSON(string jsonString)
         {
-            return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+            try
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+            }
+            catch (JsonReaderException ex)
+            {
+                Mod.logger.LogError($"Error reading customLabels.json\n{ex.Message}");
+                return new Dictionary<string, string>();
+            }
         }
 
         public static string KeyCodeToString(string keyCode)

@@ -1,9 +1,8 @@
-﻿using Nautilus.Utility;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 
@@ -15,11 +14,61 @@ namespace QuickSlotsPlus.Utility
 
         public static Dictionary<string, string> CustomLabels = new Dictionary<string, string>();
 
-        public static string getSlotKeyText(int slotId)
+        private static readonly Dictionary<int, GameInput.Button> buttonMap = new()
         {
+            { -4, GameInput.Button.LeftHand },
+            { -3, GameInput.Button.RightHand },
+            { 0, GameInput.Button.Slot1 },
+            { 1, GameInput.Button.Slot2 },
+            { 2, GameInput.Button.Slot3 },
+            { 3, GameInput.Button.Slot4 },
+            { 4, GameInput.Button.Slot5 },
+            { 5, QuickSlotsPlus.Slot6 },
+            { 6, QuickSlotsPlus.Slot7 },
+            { 7, QuickSlotsPlus.Slot8 },
+            { 8, QuickSlotsPlus.Slot9 },
+            { 9, QuickSlotsPlus.Slot10 },
+            { 10, QuickSlotsPlus.Slot11 },
+            { 11, QuickSlotsPlus.Slot12 },
+            { 12, QuickSlotsPlus.Slot13 },
+            { 13, QuickSlotsPlus.Slot14 },
+            { 14, QuickSlotsPlus.Slot15 },
+            { 15, QuickSlotsPlus.Slot16 },
+            { 16, QuickSlotsPlus.Slot17 },
+            { 17, QuickSlotsPlus.Slot18 },
+            { 18, QuickSlotsPlus.Slot19 },
+            { 19, QuickSlotsPlus.Slot20 }
+        };
+
+        public static string GetSlotKeyText(int slotId)
+        {
+#if SUBNAUTICA
+            bool exists = buttonMap.TryGetValue(slotId, out GameInput.Button button);
+            if (!exists)
+            {
+                ErrorMessage.AddDebug($"Missing button for slot id: {slotId}");
+                return "";
+            }
+
+            string binding = GameInput.GetBinding(GameInput.PrimaryDevice, button, GameInput.BindingSet.Primary);
+            QuickSlotsPlus.logger.LogDebug($"{button}: {binding}");
+
+            if (binding == "None")
+            {
+                return "";
+            }
+            else if (CustomLabels.TryGetValue(binding, out string custom))
+            {
+                return string.Format("<color=#ADF8FFFF>{0}</color>", custom);
+            }
+            else
+            {
+                return GameInput.FormatButton(button);
+            }
+#else
             string bindingName;
             // Hotkeys 1-5
-            if (slotId < Player.quickSlotButtonsCount)
+            if (slotId < 5)
             {
                 bindingName = GameInput.GetBindingName(GameInput.Button.Slot1 + slotId, GameInput.BindingSet.Primary);
                 if (bindingName == null)
@@ -36,6 +85,7 @@ namespace QuickSlotsPlus.Utility
 
             string input = uGUI.GetDisplayTextForBinding(bindingName);
             return KeyCodeToString(input);
+#endif
         }
 
         public static void LoadCustomLabels()
@@ -62,7 +112,8 @@ namespace QuickSlotsPlus.Utility
             }
             catch (JsonReaderException ex)
             {
-                Mod.logger.LogError($"Error reading customLabels.json\n{ex.Message}");
+                ErrorMessage.AddError($"Error reading customLabels.json\n{ex.Message}");
+                QuickSlotsPlus.logger.LogError($"Error reading customLabels.json\n{ex.Message}");
                 return new Dictionary<string, string>();
             }
         }
@@ -146,7 +197,7 @@ namespace QuickSlotsPlus.Utility
           {"Alpha8", '8'},
           {"Alpha9", '9'},
           {"Alpha0", '0'},
-          
+
           {"KeypadPeriod", '.'},
           {"KeypadDivide", '/'},
           {"KeypadMultiply", '*'},
@@ -186,7 +237,7 @@ namespace QuickSlotsPlus.Utility
             TextMeshProUGUI textPrefab = GetTextPrefab();
             if (textPrefab == null)
             {
-                Mod.logger.LogDebug("Could not find text prefab.");
+                QuickSlotsPlus.logger.LogDebug("Could not find text prefab.");
                 return;
             }
 
@@ -230,13 +281,13 @@ namespace QuickSlotsPlus.Utility
 
         private static bool ShouldShowLabels(uGUI_QuickSlots quickSlots)
         {
-            if (quickSlots == null || !Mod.Options.showLabels)
+            if (quickSlots == null || !QuickSlotsPlus.Options.showLabels)
             {
                 return false;
             }
 
             Player player = Player.main;
-            return player != null && (player.GetMode() == Player.Mode.Normal || Mod.Options.showLabelsWhilePiloting);
+            return player != null && (player.GetMode() == Player.Mode.Normal || QuickSlotsPlus.Options.showLabelsWhilePiloting);
         }
 
         // Used dnspy to rip the bones from RandyKnapp's version: https://www.nexusmods.com/subnautica/mods/14
@@ -249,7 +300,7 @@ namespace QuickSlotsPlus.Utility
             text.transform.localScale = new Vector3(1f, 1f, 1f);
             text.gameObject.SetActive(true);
             text.enabled = true;
-            text.text = getSlotKeyText(index);
+            text.text = GetSlotKeyText(index);
             text.alignment = TextAlignmentOptions.Center;
             RectTransformExtensions.SetParams(text.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), parent);
             text.rectTransform.SetSizeWithCurrentAnchors(0, 100f);
@@ -257,11 +308,12 @@ namespace QuickSlotsPlus.Utility
             text.raycastTarget = false;
 
             // **** Set config options ****
-            text.fontSize = (int)Mod.Options.labelSize;
-            text.color = Mod.Options.color;
-
-            float xPos = Mod.Options.labelXpos;
-            float yPos = Mod.Options.labelYpos - 36f; // Subtract 36 to make default position be below the icons
+            text.fontSize = (int)QuickSlotsPlus.Options.labelSize;
+#if BELOWZERO
+            text.color = QuickSlotsPlus.Options.color;
+#endif
+            float xPos = QuickSlotsPlus.Options.labelXpos;
+            float yPos = QuickSlotsPlus.Options.labelYpos - 36f; // Subtract 36 to make default position be below the icons
             text.rectTransform.anchoredPosition = new Vector3(xPos, yPos);
 
             return text;

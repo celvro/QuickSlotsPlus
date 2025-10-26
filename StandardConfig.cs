@@ -1,7 +1,5 @@
 ﻿using Nautilus.Json;
-using Nautilus.Options;
 using Nautilus.Options.Attributes;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace QuickSlotsPlus
@@ -9,33 +7,33 @@ namespace QuickSlotsPlus
     [Menu("QuickSlots+")]
     public class StandardConfig : ConfigFile
     {
-        [Slider("QuickSlot Count", 0, 20, DefaultValue = 10, Tooltip = "Reload the game if you reduce this below 5."), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(0, 20, DefaultValue = 10, LabelLanguageId = "SlotCount", TooltipLanguageId = "SlotCount_Tooltip"), OnChange(nameof(RedrawQuickSlots))]
         public int slotCount = 10;
 
-        [Toggle("Do Not Add New Items to Empty Slots", Tooltip = "You can override this for individual slots in BepInEx/plugins/QuickSlotsPlus/allowItems.json")]
+        [Toggle(LabelLanguageId = "DisableBindToEmpty", TooltipLanguageId = "DisableBindToEmpty_Tooltip")]
         public bool disableBindToEmpty = true;
 
-        [Toggle("Mixed Input Mode", Tooltip = "Prevent items from unequiping, and labels from switching, when using keyboard and controller at the same time."), OnChange(nameof(RedrawQuickSlots))]
-        public bool mixedInputMode = false;
-
-        [Toggle("Show HotKey labels"), OnChange(nameof(RedrawQuickSlots))]
+        [Toggle(LabelLanguageId = "ShowHotkeyLabels"), OnChange(nameof(RedrawQuickSlots))]
         public bool showLabels = true;
 
-        [Toggle("Show labels while piloting Vehicles", Tooltip = "Exit vehicle to take effect")]
+        [Toggle(LabelLanguageId = "ShowLabelsWhilePiloting", TooltipLanguageId = "ShowLabelsWhilePiloting_Tooltip")]
         public bool showLabelsWhilePiloting = false;
 
+#if BELOWZERO
         [ColorPicker("Label Color", Advanced = true), OnChange(nameof(RedrawQuickSlots))]
         public Color color = Color.white;
+#endif
 
-        [Slider("Label Size", 8, 100, DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(10, 80, LabelLanguageId = "LabelSize", DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
         public float labelSize = 20;
 
-        [Slider("Horizontal Position", -20, 20, DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(-30, 30, LabelLanguageId = "LabelHorizontal", DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
         public float labelXpos = 0;
 
-        [Slider("Vertical Position", -25, 100, DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(-20, 100, LabelLanguageId = "LabelVertical", DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
         public float labelYpos = 0;
 
+#if BELOWZERO
         [Keybind("Slot 6"), OnChange(nameof(RedrawQuickSlots))]
         public KeyCode HotKey6 = KeyCode.Alpha6;
 
@@ -80,37 +78,15 @@ namespace QuickSlotsPlus
 
         [Keybind("Slot 20"), OnChange(nameof(RedrawQuickSlots))]
         public KeyCode HotKey20;
-
-        /*[Button("Reset Keybinds", Tooltip = "Reset Keybinds to their default values. Close options menu to take effect.")]*/
-        public void ResetKeybinds(ButtonClickedEventArgs eventArgs)
-        {
-            Mod.Options.HotKey6 = KeyCode.Alpha6;
-            Mod.Options.HotKey7 = KeyCode.Alpha7;
-            Mod.Options.HotKey8 = KeyCode.Alpha8;
-            Mod.Options.HotKey9 = KeyCode.Alpha9;
-            Mod.Options.HotKey10 = KeyCode.Alpha0;
-            Mod.Options.HotKey11 = KeyCode.Minus;
-            Mod.Options.HotKey12 = KeyCode.Equals;
-            Mod.Options.HotKey13 = KeyCode.None;
-            Mod.Options.HotKey14 = KeyCode.None;
-            Mod.Options.HotKey15 = KeyCode.None;
-            Mod.Options.HotKey16 = KeyCode.None;
-            Mod.Options.HotKey17 = KeyCode.None;
-            Mod.Options.HotKey18 = KeyCode.None;
-            Mod.Options.HotKey19 = KeyCode.None;
-            Mod.Options.HotKey20 = KeyCode.None;
-
-            Mod.Options.Save();
-            Mod.logger.LogDebug("Clicked reset keybinds.");
-        }
+#endif
 
         /* 
          * Redraw the QuickSlots after user changes preferences in settings menu.
          */
         public static void RedrawQuickSlots()
         {
-            Mod.logger.LogDebug("Redraw quick slots due to options change");
-            Mod.RedrawQuickSlots();
+            QuickSlotsPlus.logger.LogDebug("Redraw quick slots due to options change");
+            QuickSlotsPlus.RedrawQuickSlots();
         }
     }
 }

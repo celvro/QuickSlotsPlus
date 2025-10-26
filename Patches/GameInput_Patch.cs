@@ -1,37 +1,19 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
+using HarmonyLib;
 
 namespace QuickSlotsPlus.Patches
 {
 
     /*
-     * Called when QuickSlot 1-5 keybinding is set.
+     * Called when any keybindings are set.
      */
-    [HarmonyPatch(typeof(GameInput), nameof(GameInput.SafeSetBinding), new Type[] { typeof(GameInput.Device), typeof(GameInput.Button), typeof(GameInput.BindingSet), typeof(string) })]
-    class GameInput_SafeSetBinding_Patch
+    [HarmonyPatch(typeof(GameInput), nameof(GameInput.TryBind), new Type[] { typeof(GameInput.Device), typeof(GameInput.Button), typeof(GameInput.BindingSet), typeof(string) })]
+    class GameInput_Patch
     {
         static void Postfix()
         {
-            Mod.logger.LogDebug("Redraw quickslots after SafeSetBinding");
-            Mod.RedrawQuickSlots();
-        }
-    }
-
-    [HarmonyPatch(typeof(GameInput), nameof(GameInput.Awake))]
-    class GameInput_Awake_Patch
-    {
-        static void Postfix()
-        {
-            GameInput.OnPrimaryDeviceChanged += Redraw;
-        }
-
-        static void Redraw()
-        {
-            if (!Mod.Options.mixedInputMode)
-            {
-                Mod.logger.LogDebug("Redraw quickslots after Input change");
-                Mod.RedrawQuickSlots();
-            }
+            QuickSlotsPlus.logger.LogDebug("Redraw quickslots after TryBind");
+            QuickSlotsPlus.RedrawQuickSlots();
         }
     }
 }

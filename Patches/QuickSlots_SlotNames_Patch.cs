@@ -28,7 +28,7 @@ namespace QuickSlotsPlus.Patches
                 if (codes[i].opcode == OpCodes.Ldsfld)
                 {
                     codes[i].operand = AccessTools.Field(typeof(LabelUtil), "slotNames");
-                    Mod.logger.LogInfo("Transpiled Update method with new slotnames.");
+                    QuickSlotsPlus.logger.LogInfo("Transpiled Update method with new slotnames.");
                     break;
                 }
             }
@@ -47,7 +47,7 @@ namespace QuickSlotsPlus.Patches
                 if (codes[i].opcode == OpCodes.Ldsfld && codes[i + 1].opcode == OpCodes.Ldarg_1)
                 {
                     codes[i].operand = AccessTools.Field(typeof(LabelUtil), "slotNames");
-                    Mod.logger.LogInfo("Transpiled SelectInternal method with new slotnames.");
+                    QuickSlotsPlus.logger.LogInfo("Transpiled SelectInternal method with new slotnames.");
                     break;
                 }
             }
@@ -66,7 +66,7 @@ namespace QuickSlotsPlus.Patches
                 if (codes[i].opcode == OpCodes.Ldsfld && codes[i + 1].opcode == OpCodes.Ldloc_1)
                 {
                     codes[i].operand = AccessTools.Field(typeof(LabelUtil), "slotNames");
-                    Mod.logger.LogInfo("Transpiled DeselectInternal method with new slotnames.");
+                    QuickSlotsPlus.logger.LogInfo("Transpiled DeselectInternal method with new slotnames.");
                     break;
                 }
             }

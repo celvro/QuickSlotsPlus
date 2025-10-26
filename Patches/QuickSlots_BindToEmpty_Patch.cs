@@ -18,12 +18,12 @@ namespace QuickSlotsPlus.Patches
     {
         static bool Prefix(InventoryItem item, ref int __result, QuickSlots __instance)
         {
-            Mod.logger.LogDebug($"Picked up item, TechType: {item.techType}");
+            QuickSlotsPlus.logger.LogDebug($"Picked up item, TechType: {item.techType}");
 
 #if SUBNAUTICA
-            bool disabled = Mod.Options.disableBindToEmpty && !IntroLifepodDirector.IsActive;
+            bool disabled = QuickSlotsPlus.Options.disableBindToEmpty && !IntroLifepodDirector.IsActive;
 #else
-            bool disabled = Mod.Options.disableBindToEmpty;
+            bool disabled = QuickSlotsPlus.Options.disableBindToEmpty;
 #endif
             if (!disabled || ItemHelper.AllowedTechType(item))
             {
@@ -35,7 +35,7 @@ namespace QuickSlotsPlus.Patches
                     __result = reservedSlot - 1;
                     return false;
                 }
-                
+
                 int firstEmpty = FirstEmpty(__instance);
                 if (firstEmpty != -1)
                 {
@@ -103,7 +103,7 @@ namespace QuickSlotsPlus.Patches
                 {
                     allowedTechtypes = JsonConvert.DeserializeObject<Dictionary<string, int>>(StripComments(jsonString));
                 }
-                catch(JsonReaderException ex)
+                catch (JsonReaderException ex)
                 {
                     BasicText error = new(0, 100, 20, Color.red);
                     error.ShowMessage($"[QuickSlotsPlus] Error reading allowItems.json\n{ex.Message}", 15);

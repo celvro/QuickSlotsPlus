@@ -14,6 +14,7 @@ namespace QuickSlotsPlus.Utility
 
         public static Dictionary<string, string> CustomLabels = new Dictionary<string, string>();
 
+#if SUBNAUTICA
         private static readonly Dictionary<int, GameInput.Button> buttonMap = new()
         {
             { -4, GameInput.Button.LeftHand },
@@ -39,6 +40,7 @@ namespace QuickSlotsPlus.Utility
             { 18, QuickSlotsPlus.Slot19 },
             { 19, QuickSlotsPlus.Slot20 }
         };
+#endif
 
         public static string GetSlotKeyText(int slotId)
         {
@@ -79,7 +81,7 @@ namespace QuickSlotsPlus.Utility
             }
             else
             {
-                KeyCode keyCode = (KeyCode)Mod.Options.GetType().GetField("HotKey" + (slotId + 1)).GetValue(Mod.Options);
+                KeyCode keyCode = (KeyCode)QuickSlotsPlus.Options.GetType().GetField("HotKey" + (slotId + 1)).GetValue(QuickSlotsPlus.Options);
                 bindingName = GameInput.GetInputName(GameInput.GetKeyCodeAsInputName(keyCode));
             }
 
@@ -226,7 +228,16 @@ namespace QuickSlotsPlus.Utility
         public static void DrawLabels(uGUI_QuickSlots quickSlots)
         {
             uGUI_ItemIcon[] icons = quickSlots.icons;
-            if (!ShouldShowLabels(quickSlots) || icons == null)
+            if (icons == null)
+            {
+                return;
+            }
+
+            // Init() can be called again for the same icons (e.g. entering/exiting a vehicle),
+            // so clear out any labels from a previous draw before adding new ones.
+            RemoveLabels(icons);
+
+            if (!ShouldShowLabels(quickSlots))
             {
                 return;
             }
@@ -265,6 +276,34 @@ namespace QuickSlotsPlus.Utility
                     }
                 }
                 CreateNewText(textPrefab, itemIcon.transform, index);
+            }
+        }
+
+        // Removes labels created by CreateNewText so repeated Init() calls (e.g. entering/exiting a vehicle)
+        // don't stack duplicates, and so labels actually disappear when toggled off.
+        private static void RemoveLabels(uGUI_ItemIcon[] icons)
+        {
+            if (icons == null)
+            {
+                return;
+            }
+
+            foreach (uGUI_ItemIcon icon in icons)
+            {
+                if (icon == null)
+                {
+                    continue;
+                }
+
+                Transform iconTransform = icon.transform;
+                for (int i = iconTransform.childCount - 1; i >= 0; i--)
+                {
+                    Transform child = iconTransform.GetChild(i);
+                    if (child.name.StartsWith("QuickSlotText"))
+                    {
+                        Object.Destroy(child.gameObject);
+                    }
+                }
             }
         }
 

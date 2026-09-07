@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Subnautica</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BB85C5A1-8FC2-4065-9DA4-91A20B5B77AE}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -15,10 +15,7 @@
     <Optimize>true</Optimize>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <RestoreAdditionalProjectSources>
-      https://api.nuget.org/v3/index.json;
-      https://nuget.bepinex.dev/v3/index.json;
-    </RestoreAdditionalProjectSources>
+    <RestoreAdditionalProjectSources>https://api.nuget.org/v3/index.json;https://nuget.bepinex.dev/v3/index.json</RestoreAdditionalProjectSources>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Subnautica|AnyCPU' ">
     <GameDir>C:\Program Files (x86)\Steam\steamapps\common\Subnautica</GameDir>
@@ -35,26 +32,33 @@
     <PackageReference Include="BepInEx.Core" Version="5.4.21" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.1.0" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.4.36" IncludeAssets="compile" />
-    <PackageReference Include="Subnautica.GameLibs" Version="71288.0.0-r.0" />
     <PackageReference Include="PolySharp" Version="1.15.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Subnautica'">
+    <PackageReference Include="Subnautica.GameLibs" Version="82304.0.0-r.0" />
     <PackageReference Include="Subnautica.Nautilus" Version="1.*-*" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'BelowZero'">
+    <PackageReference Include="Subnautica.BelowZero.GameLibs" Version="71288.0.0-r.0" />
+    <PackageReference Include="SubnauticaZero.Nautilus" Version="1.*-*" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\GameInput_Patch.cs" />
     <Compile Include="Patches\QuickSlots_BindToEmpty_Patch.cs" />
-    <Compile Include="Utility\InputHandler.cs" />
     <Compile Include="Patches\uGUI_QuickSlots_Init_Patch.cs" />
+    <Compile Include="QuickSlotsPlus.cs" />
     <Compile Include="StandardConfig.cs" />
-    <Compile Include="Mod.cs" />
     <Compile Include="Patches\Inventory_Awake_Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Patches\QuickSlots_SlotNames_Patch.cs" />
     <Compile Include="Utility\LabelUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

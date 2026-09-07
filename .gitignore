@@ -6,3 +6,4 @@ QuickSlotsPlus.csproj.user
 *.zip
 *.dll
 .vs/
+.vscode/

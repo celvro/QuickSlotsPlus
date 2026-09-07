@@ -1,4 +1,7 @@
 ﻿using HarmonyLib;
+#if BELOWZERO
+using QuickSlotsPlus.Utility;
+#endif
 
 namespace QuickSlotsPlus.Patches
 {
@@ -12,6 +15,13 @@ namespace QuickSlotsPlus.Patches
             Player player = __instance.GetComponent<Player>();
 
             __instance.quickSlots = new QuickSlots(__instance.gameObject, __instance.toolSocket, __instance.cameraSocket, __instance, player.rightHandSlot, slotCount);
+
+#if BELOWZERO
+            if (__instance.gameObject.GetComponent<InputHandler>() == null)
+            {
+                __instance.gameObject.AddComponent<InputHandler>();
+            }
+#endif
         }
     }
 }

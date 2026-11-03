@@ -16,7 +16,12 @@ A C# mod for Subnautica to add more slots.
 ## Requirements
 
 * [BepInEx](https://www.nexusmods.com/subnautica/mods/1108)
-* [Nautilus](https://www.nexusmods.com/subnautica/mods/1262) (formerly SMLHelper)
+* [Nautilus](https://www.nexusmods.com/subnautica/mods/1262) (formerly SMLHelper) — **1.0.0-pre.46 or newer**. Earlier builds have no `CreateInput` API, so the extra slots cannot register and the mod fails to load with a `TypeInitializationException`.
+
+> [!Note]
+> Vortex resolves Nautilus from Nexus normally. Thunderstore mod managers (r2modman, Gale,
+> Thunderstore Mod Manager) cannot, because Nautilus is not published on Thunderstore — if you
+> installed QuickSlots+ from Thunderstore, install Nautilus from the Nexus link above by hand.
 
 ## Installation
 
@@ -41,9 +46,19 @@ Now supports Controller icons on hotbar!
 
 ## Nitrox
 
-Manually edit Nautilus's `BepInEx\plugins\Modding Helper\mod.json` file and add `"NitroxCompat": true`.
+Tested with Nitrox 1.8.1.0 and Nautilus 1.0.0-pre.56. No extra setup is needed, and the old
+`"NitroxCompat"` setting from SMLHelper no longer exists.
 
-Warning: Did not test this after the switch from SMLHelper to Nautilus.
+Nitrox 1.8.1.0 hangs on the epilepsy warning screen with Nautilus 1.0.0-pre.45 or newer, even without
+other mods. QuickSlots+ includes a workaround for this, so if you remove it you will also need to roll
+Nautilus back to 1.0.0-pre.44 to keep playing Nitrox. Nitrox's chat and Discord keys keep their defaults
+but can't be changed in the options menu.
+
+> [!Warning]
+> Nitrox saves your quick slot bindings per world at whatever length your client used, and
+> restores them without checking the slot count in effect. Lowering **Slot count**, or joining a
+> world with the mod removed, after playing with more slots can raise an `IndexOutOfRangeException`
+> while the world loads. Keep the slot count consistent for a given Nitrox save.
 
 ### Reserve Item Slots
 
@@ -78,6 +93,13 @@ You can override them with the KeyCode name.
 * Sometimes while testing Nitrox my equipped tool icon disappeared
 
 ## Changes
+
+### 3.1 (Nitrox fix)
+
+* Fixed the game hanging on the epilepsy warning screen when using Nitrox with Nautilus 1.0.0-pre.45 or newer
+* Tested quick slots 7-10 and saved slot positions with Nitrox 1.8.1.0 and Nautilus 1.0.0-pre.56
+* Requires Nautilus 1.0.0-pre.46 or newer
+* Harmony patches are now removed when the plugin is unloaded
 
 ### 2.0 (Nautilus update)
 

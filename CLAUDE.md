@@ -18,6 +18,14 @@ msbuild QuickSlotsPlus.csproj /p:Configuration=Subnautica
 msbuild QuickSlotsPlus.csproj /p:Configuration=BelowZero
 ```
 
+Each configuration pulls a different `GameLibs` package, but NuGet writes one set of restore assets
+per project. The csproj therefore points `MSBuildProjectExtensionsPath` at `obj\<Configuration>\`,
+set before the `Microsoft.Common.props` import because that is where the property is read. Without
+it, building one game straight after restoring the other compiles against the wrong game's
+`Assembly-CSharp` and fails in [LabelUtil.cs](Utility/LabelUtil.cs) with `CS0117` on
+`GameInput.GetBindingName` / `GetInputName` / `GetKeyCodeAsInputName` / `uGUI.GetDisplayTextForBinding`.
+Those errors mean a stale restore, not a missing API.
+
 After a successful build, the `PostBuildEvent` in [QuickSlotsPlus.csproj](QuickSlotsPlus.csproj) automatically xcopies the built DLL into `release\<Configuration>\BepInEx\plugins\QuickSlotsPlus\` and into `$(GameDir)\BepInEx\plugins\QuickSlotsPlus\` (or `QuickSlotsPlus_BZ` for BelowZero). `$(GameDir)` defaults to the Steam install path and must be edited in the csproj if the game lives elsewhere.
 
 Before building, publicized game assemblies must be available — see the "Build from source" section in [README.md](README.md) (uses https://github.com/elliotttate/Bepinex-Tools). Game/BepInEx/Nautilus assemblies are pulled via NuGet (see `RestoreAdditionalProjectSources` in the csproj, pointing at nuget.org and nuget.bepinex.dev) rather than committed to the repo.
@@ -38,6 +46,7 @@ There are no automated tests; verification is manual, in-game.
 - [QuickSlots_BindToEmpty_Patch.cs](Patches/QuickSlots_BindToEmpty_Patch.cs) — prefix (fully replaces, returns `false`) on `QuickSlots.BindToEmpty`; implements the `disableBindToEmpty` option and the `allowItems.json`-driven reserved-slot/auto-equip logic (`ItemHelper` class in the same file).
 - [uGUI_QuickSlots_Init_Patch.cs](Patches/uGUI_QuickSlots_Init_Patch.cs) — postfix on `uGUI_QuickSlots.Init`; triggers `LabelUtil.DrawLabels` to (re)draw hotkey label text over the slot icons.
 - [GameInput_Patch.cs](Patches/GameInput_Patch.cs) — postfix on `GameInput.TryBind`; redraws quickslots whenever the user rebinds a key, so labels stay in sync.
+- [GameInputSystem_Initialize_Patch.cs](Patches/GameInputSystem_Initialize_Patch.cs) — Subnautica only; transpiler on `GameInputSystem.Initialize` that adds Nitrox's buttons (values 1000+) to the list it builds actions from, because Nitrox otherwise hangs on the epilepsy warning screen with Nautilus pre.45+.
 
 **Redraw flow.** Any time slot count, labels, or bindings change (options menu `OnChange` callbacks in [StandardConfig.cs](StandardConfig.cs), or a keybind change), `QuickSlotsPlus.RedrawQuickSlots()` in [QuickSlotsPlus.cs](QuickSlotsPlus.cs) runs: it saves the current `binding` array, deselects the active slot, re-invokes `Inventory_Awake_Patch.Postfix` to rebuild the `QuickSlots` object and labels, then restores as much of the old binding array as fits the new slot count.
 

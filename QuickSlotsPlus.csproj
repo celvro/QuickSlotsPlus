@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Set before Microsoft.Common.props, which is where MSBuildProjectExtensionsPath is read.
+         Configuration is normally defaulted below, but that is too late for this. -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Subnautica</Configuration>
+    <!-- The two configurations reference different GameLibs packages, while NuGet writes a single
+         project.assets.json per project. Without a per-configuration path, building one game after
+         restoring for the other compiles against the wrong game's assemblies and LabelUtil.cs fails
+         with CS0117 on GameInput.GetBindingName and friends. -->
+    <MSBuildProjectExtensionsPath>$(MSBuildProjectDirectory)\obj\$(Configuration)\</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Subnautica</Configuration>
@@ -39,7 +49,7 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Subnautica'">
     <PackageReference Include="Subnautica.GameLibs" Version="82304.0.0-r.0" />
-    <PackageReference Include="Subnautica.Nautilus" Version="1.*-*" PrivateAssets="all" />
+    <PackageReference Include="Subnautica.Nautilus" Version="1.0.0-pre.46" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'BelowZero'">
     <PackageReference Include="Subnautica.BelowZero.GameLibs" Version="71288.0.0-r.0" />
@@ -47,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Patches\GameInput_Patch.cs" />
+    <Compile Include="Patches\GameInputSystem_Initialize_Patch.cs" />
     <Compile Include="Patches\QuickSlots_BindToEmpty_Patch.cs" />
     <Compile Include="Patches\uGUI_QuickSlots_Init_Patch.cs" />
     <Compile Include="QuickSlotsPlus.cs" />

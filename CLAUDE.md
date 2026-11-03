@@ -22,6 +22,8 @@ After a successful build, the `PostBuildEvent` in [QuickSlotsPlus.csproj](QuickS
 
 Before building, publicized game assemblies must be available — see the "Build from source" section in [README.md](README.md) (uses https://github.com/elliotttate/Bepinex-Tools). Game/BepInEx/Nautilus assemblies are pulled via NuGet (see `RestoreAdditionalProjectSources` in the csproj, pointing at nuget.org and nuget.bepinex.dev) rather than committed to the repo.
 
+**Locating restored NuGet packages/DLLs (e.g. `Nautilus.dll`, game libs):** they land in the default NuGet global-packages folder, `C:\Users\lustick\.nuget\packages\` (`/c/Users/lustick/.nuget/packages/` in Git Bash) — do NOT search the whole drive (`find / -iname ...`) for them. Each package is a subfolder named after its (lowercased) package ID, e.g. `subnautica.nautilus\<version>\lib\net472\Nautilus.dll` or `subnauticazero.nautilus\<version>\lib\net472\Nautilus.dll`. Use `find "/c/Users/lustick/.nuget/packages/<package-name>" -iname "*.dll"` scoped to the specific package folder instead.
+
 There are no automated tests; verification is manual, in-game.
 
 ## Architecture

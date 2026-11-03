@@ -17,14 +17,20 @@ namespace QuickSlotsPlus
         private const string pluginName = "Quick Slots Plus";
         private const string versionString = "3.0.0";
 
-        private static readonly Harmony harmony = new Harmony(myGUID);
+        private Harmony harmony;
 
         public static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("QuickSlots+");
 
         public void Awake()
         {
             LanguageHandler.RegisterLocalizationFolder();
+            harmony = new Harmony(myGUID);
             harmony.PatchAll();
+        }
+
+        public void OnDestroy()
+        {
+            harmony?.UnpatchSelf();
         }
 
 #if SUBNAUTICA

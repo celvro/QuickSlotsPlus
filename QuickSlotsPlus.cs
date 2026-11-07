@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using Nautilus.Handlers;
 using QuickSlotsPlus.Patches;
+using QuickSlotsPlus.Utility;
 
 namespace QuickSlotsPlus
 {
@@ -124,6 +125,15 @@ namespace QuickSlotsPlus
             .WithKeyboardBinding("None")
             .AvoidConflicts(GameInput.Device.Keyboard);
 
+        // Index 0 is slot 6, so ExtraSlotButtons[i] drives quick slot index i + 5.
+        // Declared after the Slot6..Slot20 fields so their initializers have already run.
+        internal static readonly GameInput.Button[] ExtraSlotButtons =
+        {
+            Slot6, Slot7, Slot8, Slot9, Slot10,
+            Slot11, Slot12, Slot13, Slot14, Slot15,
+            Slot16, Slot17, Slot18, Slot19, Slot20
+        };
+
         public void Update()
         {
             if (!GameInput.IsInitialized || Inventory.main == null)
@@ -131,21 +141,25 @@ namespace QuickSlotsPlus
                 return;
             }
 
-            if (GameInput.GetButtonDown(Slot6)) { Inventory.main.quickSlots.SlotKeyDown(5); }
-            if (GameInput.GetButtonDown(Slot7)) { Inventory.main.quickSlots.SlotKeyDown(6); }
-            if (GameInput.GetButtonDown(Slot8)) { Inventory.main.quickSlots.SlotKeyDown(7); }
-            if (GameInput.GetButtonDown(Slot9)) { Inventory.main.quickSlots.SlotKeyDown(8); }
-            if (GameInput.GetButtonDown(Slot10)) { Inventory.main.quickSlots.SlotKeyDown(9); }
-            if (GameInput.GetButtonDown(Slot11)) { Inventory.main.quickSlots.SlotKeyDown(10); }
-            if (GameInput.GetButtonDown(Slot12)) { Inventory.main.quickSlots.SlotKeyDown(11); }
-            if (GameInput.GetButtonDown(Slot13)) { Inventory.main.quickSlots.SlotKeyDown(12); }
-            if (GameInput.GetButtonDown(Slot14)) { Inventory.main.quickSlots.SlotKeyDown(13); }
-            if (GameInput.GetButtonDown(Slot15)) { Inventory.main.quickSlots.SlotKeyDown(14); }
-            if (GameInput.GetButtonDown(Slot16)) { Inventory.main.quickSlots.SlotKeyDown(15); }
-            if (GameInput.GetButtonDown(Slot17)) { Inventory.main.quickSlots.SlotKeyDown(16); }
-            if (GameInput.GetButtonDown(Slot18)) { Inventory.main.quickSlots.SlotKeyDown(17); }
-            if (GameInput.GetButtonDown(Slot19)) { Inventory.main.quickSlots.SlotKeyDown(18); }
-            if (GameInput.GetButtonDown(Slot20)) { Inventory.main.quickSlots.SlotKeyDown(19); }
+            // TEMPORARY, remove along with Utility/Diagnostics.cs.
+            Diagnostics.Tick();
+            Diagnostics.LogVanillaSlotPresses();
+
+            QuickSlots quickSlots = Inventory.main.quickSlots;
+
+            for (var i = 0; i < ExtraSlotButtons.Length; i++)
+            {
+                if (!GameInput.GetButtonDown(ExtraSlotButtons[i]))
+                {
+                    continue;
+                }
+
+                int slotIndex = i + 5;
+
+                Diagnostics.LogSlotKeyDown(ExtraSlotButtons[i], slotIndex, quickSlots);
+                quickSlots.SlotKeyDown(slotIndex);
+                Diagnostics.LogSlotKeyDownResult(slotIndex, quickSlots);
+            }
         }
 #endif
         /*

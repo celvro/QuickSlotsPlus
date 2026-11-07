@@ -67,6 +67,7 @@
     <Compile Include="Patches\QuickSlots_SlotNames_Patch.cs" />
     <Compile Include="Utility\LabelUtil.cs" />
     <Compile Include="Utility\InputHandler.cs" />
+    <Compile Include="Utility\Diagnostics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

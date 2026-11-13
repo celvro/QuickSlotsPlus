@@ -5,19 +5,32 @@ using UnityEngine.UI;
 
 namespace QuickSlotsPlus
 {
+    /*
+     * Labels are passed as Label = "<language id>", deliberately NOT as LabelLanguageId.
+     *
+     * The game never rebuilds the options panel when the language changes. Every row carries a
+     * TranslationLiveUpdate component whose translationKey is the label string it was created with, and
+     * on Language.OnLanguageChanged it re-runs Language.main.Get(translationKey). Nautilus resolves a
+     * LabelLanguageId itself and hands the game the translated text, so the key becomes e.g. "Slot Count",
+     * the re-lookup finds nothing, and the row stays in the old language until the game restarts. Handing
+     * the game the id as the label makes it do the lookup, and the live update, itself.
+     *
+     * Tooltips have no such component. Nautilus resolves TooltipLanguageId each time the row is created,
+     * so they follow the language once the options panel has been closed and reopened.
+     */
     [Menu("QuickSlots+")]
     public class StandardConfig : ConfigFile
     {
-        [Slider(0, 20, DefaultValue = 10, LabelLanguageId = "SlotCount", TooltipLanguageId = "SlotCount_Tooltip"), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(0, 20, DefaultValue = 10, Label = "SlotCount", TooltipLanguageId = "SlotCount_Tooltip"), OnChange(nameof(RedrawQuickSlots))]
         public int slotCount = 10;
 
-        [Toggle(LabelLanguageId = "DisableBindToEmpty", TooltipLanguageId = "DisableBindToEmpty_Tooltip")]
+        [Toggle(Label = "DisableBindToEmpty", TooltipLanguageId = "DisableBindToEmpty_Tooltip")]
         public bool disableBindToEmpty = true;
 
-        [Toggle(LabelLanguageId = "ShowHotkeyLabels"), OnChange(nameof(RedrawQuickSlots))]
+        [Toggle(Label = "ShowHotkeyLabels"), OnChange(nameof(RedrawQuickSlots))]
         public bool showLabels = true;
 
-        [Toggle(LabelLanguageId = "ShowLabelsWhilePiloting", TooltipLanguageId = "ShowLabelsWhilePiloting_Tooltip")]
+        [Toggle(Label = "ShowLabelsWhilePiloting", TooltipLanguageId = "ShowLabelsWhilePiloting_Tooltip")]
         public bool showLabelsWhilePiloting = false;
 
 #if BELOWZERO
@@ -25,13 +38,13 @@ namespace QuickSlotsPlus
         public Color color = Color.white;
 #endif
 
-        [Slider(10, 80, LabelLanguageId = "LabelSize", DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(10, 80, Label = "LabelSize", DefaultValue = 20), OnChange(nameof(RedrawQuickSlots))]
         public float labelSize = 20;
 
-        [Slider(-30, 30, LabelLanguageId = "LabelHorizontal", DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(-30, 30, Label = "LabelHorizontal", DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
         public float labelXpos = 0;
 
-        [Slider(-20, 100, LabelLanguageId = "LabelVertical", DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
+        [Slider(-20, 100, Label = "LabelVertical", DefaultValue = 0), OnChange(nameof(RedrawQuickSlots))]
         public float labelYpos = 0;
 
 #if BELOWZERO

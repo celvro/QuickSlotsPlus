@@ -8,6 +8,7 @@ A C# mod for Subnautica to add more slots.
 * Up to 20 slots with hotkeys
 * Disable adding new items to the quick slots
 * Custom hotkey labels
+* Translated into all 39 languages the game supports
 * Works with Nitrox
 
 > [!Warning]
@@ -37,7 +38,7 @@ Manual:
 
 1. Install Visual Studio or use msbuild. Game assemblies are pulled automatically via NuGet (`Subnautica.GameLibs` / `Subnautica.BelowZero.GameLibs`).
 1. Change the $(GameDir) property in the .csproj file if needed, it defaults to Steam directory on C: drive.
-1. In VS select Build -> Build Solution (or `msbuild QuickSlotsPlus.csproj /p:Configuration=Subnautica` / `BelowZero`), it will copy the files into your BepInEx folder.
+1. In VS select Build -> Build Solution (or `msbuild QuickSlotsPlus.csproj /p:Configuration=Subnautica` / `BelowZero`), it will copy the files into your BepInEx folder. The copy into the game folder is skipped while the game is running, because it keeps the DLL locked; close the game and build again.
 1. Launch Subnautica.
 
 ## Controller Support
@@ -92,7 +93,27 @@ You can override them with the KeyCode name.
 * Can't use CTRL or ALT modifiers for hotkeys
 * Sometimes while testing Nitrox my equipped tool icon disappeared
 
+## Translations
+
+The options menu is translated into every language the game ships with. The files live in `Localization\`
+next to the DLL, one JSON file per language, named exactly like the game's own language files
+(`German.json`, `Spanish (Latin America).json`, ...). Slot names follow each language's own wording for
+the vanilla slots, so slots 6-20 read like slots 1-5 in the key bindings menu.
+
+To fix or improve a translation, edit the matching file and keep every key; a language that is missing
+a key falls back to English. Option labels switch as soon as you change the language in the options
+menu. Tooltips switch the next time the options panel is opened.
+
 ## Changes
+
+### Unreleased
+
+* Added translations for all 39 languages the game supports, for both Subnautica and Below Zero
+* Reviewed and corrected the Spanish wording, and added Spanish (Latin America)
+* Fixed the options menu showing the raw setting names (such as `slotCount`) instead of labels, in every language including English
+* Option labels now update immediately when the language is changed
+* Fixed the quickbar dropping back to 5 slots and items flickering between equipped and unequipped. The patches were being removed when Unity destroyed the plugin component during the first scene load, which undoes the 3.1 change below
+* Fixed the hotkeys for slots 6 and up on Subnautica, which stopped working along with the plugin component. They are now read from the inventory, as Below Zero already did
 
 ### 3.1 (Nitrox fix)
 

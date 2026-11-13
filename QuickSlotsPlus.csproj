@@ -77,10 +77,28 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Subnautica'">
     <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\$(Configuration)\BepInEx\plugins\QuickSlotsPlus\"
-xcopy /F /Y "$(TargetPath)" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus\"</PostBuildEvent>
+rem The game memory-maps the plugin DLL, so xcopy cannot replace it while the game is running - and it
+rem deletes the old file before discovering that, leaving the install with no mod at all. Skip the copy
+rem into $(GameDir) instead; a running game could not pick up a new DLL anyway.
+tasklist /FI "IMAGENAME eq Subnautica.exe" | find /I "Subnautica.exe" &gt; nul
+if not errorlevel 1 goto SkipInstall
+xcopy /F /Y "$(TargetPath)" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus\"
+xcopy /E /I /F /Y "$(ProjectDir)release\$(Configuration)\BepInEx\plugins\QuickSlotsPlus\Localization" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus\Localization\"
+goto InstallDone
+:SkipInstall
+echo Subnautica is running - skipped installing into "$(GameDir)".
+:InstallDone</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'BelowZero'">
     <PostBuildEvent>xcopy /F /Y "$(TargetPath)" "$(ProjectDir)release\$(Configuration)\BepInEx\plugins\QuickSlotsPlus_BZ\"
-xcopy /F /Y "$(TargetPath)" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus_BZ\"</PostBuildEvent>
+rem See the Subnautica PostBuildEvent above for why the install copy is skipped while the game runs.
+tasklist /FI "IMAGENAME eq SubnauticaZero.exe" | find /I "SubnauticaZero.exe" &gt; nul
+if not errorlevel 1 goto SkipInstall
+xcopy /F /Y "$(TargetPath)" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus_BZ\"
+xcopy /E /I /F /Y "$(ProjectDir)release\$(Configuration)\BepInEx\plugins\QuickSlotsPlus_BZ\Localization" "$(GameDir)\BepInEx\plugins\QuickSlotsPlus_BZ\Localization\"
+goto InstallDone
+:SkipInstall
+echo SubnauticaZero is running - skipped installing into "$(GameDir)".
+:InstallDone</PostBuildEvent>
   </PropertyGroup>
 </Project>

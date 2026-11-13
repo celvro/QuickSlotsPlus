@@ -2,8 +2,12 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using Nautilus.Handlers;
+using Newtonsoft.Json;
 using QuickSlotsPlus.Patches;
 using QuickSlotsPlus.Utility;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace QuickSlotsPlus
 {
@@ -24,9 +28,56 @@ namespace QuickSlotsPlus
 
         public void Awake()
         {
-            LanguageHandler.RegisterLocalizationFolder();
+            RegisterLocalization();
             harmony = new Harmony(myGUID);
             harmony.PatchAll();
+        }
+
+        /*
+         * Deliberately does NOT use Nautilus's LanguageHandler.RegisterLocalizationFolder().
+         *
+         * That helper locates the Localization folder from Assembly.GetCallingAssembly(), falling back to
+         * the first non-Nautilus frame of a fresh StackTrace. Neither survives the native Unity -> Awake()
+         * boundary here: it resolved to the game's own assembly folder and logged
+         *
+         *   [Error : Nautilus] Directory '...\Subnautica_Data\Managed\Localization' does not exist.
+         *                      Skipping localization registration.
+         *
+         * so not one line was ever registered and every option label fell back to its field name - in every
+         * language, English included. Resolving the folder against THIS assembly is deterministic, so load
+         * the files here and hand the parsed tables to Nautilus directly.
+         */
+        private static void RegisterLocalization()
+        {
+            string assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string folder = Path.Combine(assemblyFolder, "Localization");
+
+            if (!Directory.Exists(folder))
+            {
+                logger.LogWarning($"No Localization folder at {folder}. Option labels will show their field names.");
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(folder, "*.json"))
+            {
+                string language = Path.GetFileNameWithoutExtension(file);
+                try
+                {
+                    var lines = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(file));
+                    if (lines == null || lines.Count == 0)
+                    {
+                        logger.LogWarning($"Localization file {language}.json is empty. Skipping.");
+                        continue;
+                    }
+
+                    LanguageHandler.RegisterLocalization(language, lines);
+                }
+                catch (JsonReaderException ex)
+                {
+                    ErrorMessage.AddError($"Error reading Localization/{language}.json\n{ex.Message}");
+                    logger.LogError($"Error reading Localization/{language}.json\n{ex.Message}");
+                }
+            }
         }
 
         /*

@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-#if BELOWZERO
 using QuickSlotsPlus.Utility;
-#endif
 
 namespace QuickSlotsPlus.Patches
 {
@@ -16,12 +14,12 @@ namespace QuickSlotsPlus.Patches
 
             __instance.quickSlots = new QuickSlots(__instance.gameObject, __instance.toolSocket, __instance.cameraSocket, __instance, player.rightHandSlot, slotCount);
 
-#if BELOWZERO
+            // Both games poll the extra slot hotkeys from here, because the BepInEx plugin component is
+            // destroyed during the first scene load and anything updating on it stops running.
             if (__instance.gameObject.GetComponent<InputHandler>() == null)
             {
                 __instance.gameObject.AddComponent<InputHandler>();
             }
-#endif
         }
     }
 }

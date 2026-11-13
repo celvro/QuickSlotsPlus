@@ -35,7 +35,35 @@ namespace QuickSlotsPlus.Utility
         };
 
         private static float nextHeartbeat;
+        private static float nextBlockedHeartbeat;
         private static bool loggedActions;
+
+        /*
+         * The counterpart to Tick(): proves Update() is being called even when it bails at the guard, so a log
+         * with neither line means the plugin component itself has stopped updating.
+         */
+        public static void TickBlocked()
+        {
+            if (Time.unscaledTime < nextBlockedHeartbeat)
+            {
+                return;
+            }
+            nextBlockedHeartbeat = Time.unscaledTime + HeartbeatSeconds;
+
+            QuickSlotsPlus.logger.LogWarning(
+                "[diag] tick BLOCKED at guard:" +
+                $" GameInput.IsInitialized={GameInput.IsInitialized}" +
+                $", Inventory.main={(Inventory.main != null)}");
+        }
+
+        /*
+         * Unity gives no reason for a destroy, so record whether the game is shutting down (the benign case)
+         * or this happened mid-session (the case that would explain the bug).
+         */
+        public static string DescribeCaller()
+        {
+            return $"quitting={Application.isPlaying == false}, timeSinceStartup={Time.realtimeSinceStartup:F1}s";
+        }
 
         /*
          * Proves Update() is actually ticking, and that the enlarged QuickSlots object is the installed one.

@@ -29,9 +29,33 @@ namespace QuickSlotsPlus
             harmony.PatchAll();
         }
 
+        /*
+         * Deliberately does NOT unpatch.
+         *
+         * Unity disables and destroys this component during the first scene load, while the game is still
+         * running, long before Inventory.Awake. Unpatching there tore out every patch for the rest of the
+         * session: the quickbar stayed at the vanilla 5 slots because Inventory_Awake_Patch never ran, hotkeys
+         * 6-20 died with Update(), and QuickSlots went back to the vanilla 5-length slotNames array, so any
+         * selection past slot 5 threw IndexOutOfRangeException from Inventory.UpdateContainers every frame -
+         * the rapid equip/unequip flicker that carries on into the pause menu.
+         *
+         * The patches have to outlive the component. There is nothing to clean up at shutdown anyway, since
+         * the process is going away with them.
+         */
         public void OnDestroy()
         {
-            harmony?.UnpatchSelf();
+            // TEMPORARY, remove along with Utility/Diagnostics.cs.
+#if SUBNAUTICA
+            QuickSlotsPlus.logger.LogWarning($"[diag] OnDestroy (patches deliberately left in place). {Diagnostics.DescribeCaller()}");
+#endif
+        }
+
+        public void OnDisable()
+        {
+            // TEMPORARY, remove along with Utility/Diagnostics.cs.
+#if SUBNAUTICA
+            QuickSlotsPlus.logger.LogWarning("[diag] OnDisable: the plugin component was disabled, Update() will stop running");
+#endif
         }
 
 #if SUBNAUTICA
@@ -134,33 +158,6 @@ namespace QuickSlotsPlus
             Slot16, Slot17, Slot18, Slot19, Slot20
         };
 
-        public void Update()
-        {
-            if (!GameInput.IsInitialized || Inventory.main == null)
-            {
-                return;
-            }
-
-            // TEMPORARY, remove along with Utility/Diagnostics.cs.
-            Diagnostics.Tick();
-            Diagnostics.LogVanillaSlotPresses();
-
-            QuickSlots quickSlots = Inventory.main.quickSlots;
-
-            for (var i = 0; i < ExtraSlotButtons.Length; i++)
-            {
-                if (!GameInput.GetButtonDown(ExtraSlotButtons[i]))
-                {
-                    continue;
-                }
-
-                int slotIndex = i + 5;
-
-                Diagnostics.LogSlotKeyDown(ExtraSlotButtons[i], slotIndex, quickSlots);
-                quickSlots.SlotKeyDown(slotIndex);
-                Diagnostics.LogSlotKeyDownResult(slotIndex, quickSlots);
-            }
-        }
 #endif
         /*
          * Redraw QuickSlot items while game is currently running. Also destroys and redraws HotKey labels if enabled.

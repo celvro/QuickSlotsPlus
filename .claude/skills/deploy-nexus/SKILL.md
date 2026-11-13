@@ -81,8 +81,24 @@ page or a first file; those are done once on the website.
    against the last release (`git diff <last release commit> -- README.md`, ignoring `## Changes`
    and `## Build from source`).
 
-7. **Wrap up.** Report the version IDs and file-tab links the script printed. Offer to tag the
-   commit (`v<version>`) and push; do not do either unasked.
+7. **GitHub.** Ask before doing any of this; it is public. Tag the `Release <version>` commit and
+   push `main` and the tag, then create the release with `gh` (installed and signed in as the repo
+   owner). Past releases are titled `Release <version>`, attach both games' zips, and end with a
+   compare link to the previous tag:
+
+   ```
+   git tag -a v<version> <release commit> -m "QuickSlotsPlus <version>"
+   git push origin main
+   git push origin v<version>
+   gh release create v<version> --verify-tag --title "Release <version>" --notes-file <notes.md> release\Subnautica\QuickSlotsPlus-<version>.zip release\BelowZero\QuickSlotsPlus-BelowZero-<version>.zip
+   ```
+
+   The notes are the changelog bullets plus `**Full Changelog**: https://github.com/celvro/QuickSlotsPlus/compare/v<previous>...v<version>`.
+   Write them to a temp file, not the repo. The README's manual install points at this releases
+   page, so a release without zips leaves manual installers on the old version. Run a dry run for
+   any game whose zip was not rebuilt from the release commit, so the attached zips match it.
+
+8. **Wrap up.** Report the Nexus version IDs and file-tab links, and the GitHub release link.
 
 ## Editing the description
 

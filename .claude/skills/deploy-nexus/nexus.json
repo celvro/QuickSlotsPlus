@@ -1,0 +1,26 @@
+{
+  "games": {
+    "Subnautica": {
+      "gameDomain": "subnautica",
+      "modId": "984",
+      "fileId": "",
+      "pluginFolder": "QuickSlotsPlus",
+      "zipName": "QuickSlotsPlus-{version}.zip",
+      "displayName": "QuickSlotsPlus",
+      "category": "main",
+      "archiveExisting": true,
+      "updateModVersion": true
+    },
+    "BelowZero": {
+      "gameDomain": "subnauticabelowzero",
+      "modId": "",
+      "fileId": "",
+      "pluginFolder": "QuickSlotsPlus_BZ",
+      "zipName": "QuickSlotsPlus-BelowZero-{version}.zip",
+      "displayName": "QuickSlotsPlus (Below Zero)",
+      "category": "main",
+      "archiveExisting": true,
+      "updateModVersion": true
+    }
+  }
+}

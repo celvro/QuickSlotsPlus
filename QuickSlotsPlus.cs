@@ -20,7 +20,7 @@ namespace QuickSlotsPlus
 
         private const string myGUID = "com.celvro.subnautica.quickslotsplus";
         private const string pluginName = "Quick Slots Plus";
-        private const string versionString = "3.1.0";
+        private const string versionString = "3.2.0";
 
         private Harmony harmony;
 
@@ -95,18 +95,6 @@ namespace QuickSlotsPlus
          */
         public void OnDestroy()
         {
-            // TEMPORARY, remove along with Utility/Diagnostics.cs.
-#if SUBNAUTICA
-            QuickSlotsPlus.logger.LogWarning($"[diag] OnDestroy (patches deliberately left in place). {Diagnostics.DescribeCaller()}");
-#endif
-        }
-
-        public void OnDisable()
-        {
-            // TEMPORARY, remove along with Utility/Diagnostics.cs.
-#if SUBNAUTICA
-            QuickSlotsPlus.logger.LogWarning("[diag] OnDisable: the plugin component was disabled, Update() will stop running");
-#endif
         }
 
 #if SUBNAUTICA

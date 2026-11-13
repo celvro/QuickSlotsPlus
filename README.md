@@ -106,7 +106,7 @@ menu. Tooltips switch the next time the options panel is opened.
 
 ## Changes
 
-### Unreleased
+### 3.2.0 (Translations)
 
 * Added translations for all 39 languages the game supports, for both Subnautica and Below Zero
 * Reviewed and corrected the Spanish wording, and added Spanish (Latin America)

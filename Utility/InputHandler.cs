@@ -27,12 +27,6 @@ namespace QuickSlotsPlus.Utility
                 return;
             }
 
-            // TEMPORARY, remove along with Utility/Diagnostics.cs.
-#if SUBNAUTICA
-            Diagnostics.Tick();
-            Diagnostics.LogVanillaSlotPresses();
-#endif
-
             for (var i = 6; i <= QuickSlotsPlus.Options.slotCount; i++)
             {
                 if (!GetKeyDownForSlot(i))
@@ -40,15 +34,7 @@ namespace QuickSlotsPlus.Utility
                     continue;
                 }
 
-                int slotIndex = i - 1;
-
-#if SUBNAUTICA
-                Diagnostics.LogSlotKeyDown(QuickSlotsPlus.ExtraSlotButtons[i - 6], slotIndex, quickSlots);
-#endif
-                quickSlots.SlotKeyDown(slotIndex);
-#if SUBNAUTICA
-                Diagnostics.LogSlotKeyDownResult(slotIndex, quickSlots);
-#endif
+                quickSlots.SlotKeyDown(i - 1);
             }
         }
 

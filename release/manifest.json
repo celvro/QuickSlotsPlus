@@ -2,7 +2,7 @@
   "name": "QuickSlotsPlus",
   "website_url": "https://github.com/celvro/QuickSlotsPlus",
   "description": "Increases max quick slot count to 20. Custom hotkey labels. Fix quick slot snapping and save tool positions.",
-  "version_number": "3.1.0",
+  "version_number": "3.2.0",
   "dependencies": [
     "Subnautica_Modding-BepInExPack-5.4.2305"
   ]

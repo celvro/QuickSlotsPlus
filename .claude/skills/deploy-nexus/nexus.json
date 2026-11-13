@@ -3,10 +3,10 @@
     "Subnautica": {
       "gameDomain": "subnautica",
       "modId": "984",
-      "fileId": "",
+      "fileId": "1909582",
       "pluginFolder": "QuickSlotsPlus",
       "zipName": "QuickSlotsPlus-{version}.zip",
-      "displayName": "QuickSlotsPlus",
+      "displayName": "Quick Slots Plus (BepInEx)",
       "category": "main",
       "archiveExisting": true,
       "updateModVersion": true
